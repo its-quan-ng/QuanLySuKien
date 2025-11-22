@@ -134,18 +134,18 @@ GO
 -- 3. INSERT NgheSi
 INSERT INTO NgheSi (TenNgheSi, TheLoai, TieuSu, AnhDaiDien) VALUES
 -- Kpop Artists
-(N'Red Velvet', N'Kpop/Pop', N'Nhóm nhạc nữ Hàn Quốc thuộc SM Entertainment. Nổi tiếng với concept "dual" kết hợp giữa Red (sôi động) và Velvet (mềm mại). Thành viên: Irene, Seulgi, Wendy, Joy, Yeri.', '/images/artists/red-velvet.jpg'),
-(N'Chi Pu', N'Pop/Cpop', N'Ca sĩ, diễn viên Việt Nam tham gia Đạp Gió 2023. Nhiều ca khúc hit như Đóa Hoa Hồng, Từ Hôm Nay.', '/images/artists/chi-pu.jpg'),
-(N'Thái Từ Khôn (BLACKPINK Jisoo)', N'Kpop', N'Thành viên BLACKPINK, một trong những nhóm nhạc nữ hàng đầu thế giới. Visual đỉnh cao, giọng hát ấm áp.', '/images/artists/jisoo.jpg'),
-(N'Ella (Trần Gia Hoa)', N'Cpop', N'Thành viên huyền thoại của S.H.E, tham gia Đạp Gió. Phong cách tomboy, giọng hát khỏe khoắn.', '/images/artists/ella.jpg'),
+(N'Red Velvet', N'Kpop/Pop/R&B', N'Nhóm nhạc nữ Hàn Quốc thuộc SM Entertainment. Nổi tiếng với concept "dual" kết hợp giữa Red (sôi động) và Velvet (mềm mại). Thành viên: Irene, Seulgi, Wendy, Joy, Yeri.', '/images/artists/red-velvet.jpg'),
+(N'Bùi Lan Hương', N'VPop/Jazz/dream pop', N'Ca sĩ, diễn viên Việt Nam tham gia Đạp Gió 2024. Nhiều ca khúc hit như Ngày chưa giông bão, Mê muội, Bùa mê.', '/images/artists/chi-pu.jpg'),
+(N'Taeyeon (SNSD) ', N'Kpop/R&B', N'Là một nữ ca sĩ người Hàn Quốc. Cô nổi tiếng với tư cách là thành viên hát chính và đội trưởng của nhóm nhạc nữ Hàn Quốc Girls' Generation với ca khúc I và các album nổi bật: My Voice, Purpose, INVU.', '/images/artists/taeyeon.jpg'),
+(N'Ái Phương', N'Vpop', N'Là một nghệ sĩ đa năng của làng giải trí Việt Nam, hoạt động trong các lĩnh vực ca hát, sáng tác nhạc, đóng phim và làm MC', '/images/artists/ai-phuong.jpg'),
 (N'Mỹ Tâm', N'Ballad/Pop', N'Nữ ca sĩ, nhạc sĩ được mệnh danh là "Họa mi tóc nâu". Có nhiều album thành công và giải thưởng danh giá.', '/images/artists/my-tam.jpg'),
-(N'Twins (阿嬌 阿Sa)', N'Cpop', N'Bộ đôi huyền thoại Hồng Kông, tham gia Đạp Gió 2024. Nhiều hit như Next Stop Tianhou, Drinking Song.', '/images/artists/twins.jpg'),
-(N'Noo Phước Thịnh', N'Pop/Dance', N'Ca sĩ nam với phong cách trình diễn bùng nổ, nhiều ca khúc dance sôi động.', '/images/artists/noo-phuoc-thinh.jpg'),
+(N'Phác Thụ (Pu Shu)', N'Pop-rock, Folk rock Trung Quốc', N'Ca sĩ kiêm nhạc sĩ người Trung Quốc nổi tiếng với phong cách âm nhạc sâu sắc, giàu chất thơ và kín tiếng trong đời tư, có các tác phẩm nổi bật như "Những bông hoa đó" và "Rừng bạch dương trắng".', N'/images/artists/pu-shu.jpg),
+('Phan Mạnh Quỳnh', N'VPop/Pop/Ballad', 'Nhạc sĩ kiêm ca sĩ với sở trường sáng tác ca từ tự sự, sâu sắc, giai điệu nhẹ nhàng chạm đến cảm xúc người nghe, nổi tiếng với các hit "Vợ người ta", "Từ đó".', '/images/artists/phan-manh-quynh.jpg'),
 (N'Hoàng Thùy Linh', N'Pop/EDM', N'Ca sĩ nữ với phong cách âm nhạc đương đại, kết hợp yếu tố dân gian hiện đại.', '/images/artists/hoang-thuy-linh.jpg'),
-(N'Seventeen', N'Kpop/Pop', N'Nhóm nhạc nam Hàn Quốc 13 thành viên thuộc Pledis Entertainment. Tự sáng tác, tự biên đạo. Fanbase khổng lồ toàn cầu.', '/images/artists/seventeen.jpg'),
-(N'Joey Yung (Dung Tổ Nhi)', N'Cpop/Cantopop', N'Diva Hồng Kông, tham gia Đạp Gió. Giọng hát đỉnh cao, nhiều giải thưởng danh giá.', '/images/artists/joey-yung.jpg'),
-(N'Kim Tae Ri (김태리)', N'Actress', N'Nữ diễn viên Hàn Quốc đình đám với các phim Twenty Five Twenty One, The Handmaiden, Little Forest. Được yêu mến bởi diễn xuất tự nhiên và nụ cười tỏa nắng.', '/images/artists/kim-tae-ri.jpg'),
-(N'T-ara', N'Kpop/Dance', N'Nhóm nhạc nữ huyền thoại Kpop thế hệ 2. Queen of retro concept với loạt hit đình đám: Roly Poly, Lovey Dovey, Bo Peep Bo Peep, Number 9. Fanbase mạnh tại Việt Nam.', '/images/artists/t-ara.jpg');
+('Đông Nhi', N'Vpop/Pop/Dance', 'Ca sĩ nữ hàng đầu Việt Nam, nổi tiếng với nhiều ca khúc hit và phong cách trình diễn sôi động, từng giành giải MTV EMA 2016, có lượng người hâm mộ đông đảo.', '/images/artists/dong-nhi.jpg'),
+('Bùi Công Nam', 'Pop/Ballad/Indie', 'Ca sĩ, nhạc sĩ tài năng được mệnh danh "Ông hoàng nhạc Tết", nổi tiếng với ca từ mộc mạc, gần gũi, truyền tải năng lượng tích cực qua các ca khúc hit như "Có không giữ mất đừng tìm", "Tết "phiền" vẫn iu".', '/images/artists/bui-cong-nam.jpg'
+(N'Kim Taeri', N'Actress', N'Nữ diễn viên Hàn Quốc đình đám với các phim Twenty Five Twenty One, The Handmaiden, Little Forest. Được yêu mến bởi diễn xuất tự nhiên và nụ cười tỏa nắng.', '/images/artists/kim-taeri.jpg'),
+(N'T-ARA', N'Kpop/Dance', N'Nhóm nhạc nữ huyền thoại Kpop thế hệ 2. Queen of retro concept với loạt hit đình đám: Roly Poly, Lovey Dovey, Bo Peep Bo Peep, Number 9. Fanbase mạnh tại Việt Nam.', '/images/artists/t-ara.jpg');
 GO
 
 -- 4. INSERT SuKien
@@ -324,34 +324,3 @@ GO
   ON DELETE SET NULL;  -- Khi xóa user, UserId trong DonHang = NULL (khách vãng lai)
   GO
 
-PRINT '';
-PRINT '============================================';
-PRINT 'HOÀN THÀNH!';
-PRINT 'Database QuanLySuKien đã được tạo và seed data thành công!';
-PRINT '';
-PRINT 'Thống kê:';
-PRINT '- Địa điểm: 6 địa điểm tổ chức sự kiện';
-PRINT '- Nghệ sĩ: 12 nghệ sĩ (Kpop, Cpop, Vpop, Actress)';
-PRINT '  + Red Velvet (4 concerts!)';
-PRINT '  + T-ara, Seventeen, Kim Tae Ri';
-PRINT '  + Chi Pu, Ella, Twins, Joey Yung, Mỹ Tâm...';
-PRINT '- Sự kiện: 10 concerts/fanmeetings';
-PRINT '  + Red Velvet: RED MARE, R TO V, THE RED ROOM, LA ROUGE';
-PRINT '  + T-ara: Queens Are Back';
-PRINT '  + Kim Tae Ri: 2521 Days Fan Meeting';
-PRINT '  + Seventeen: FOLLOW World Tour';
-PRINT '  + Đạp Gió 2024, KPOP Festival...';
-PRINT '- Loại vé: 34 loại vé (VIP, VVIP, Hi-Touch, Soundcheck, Polaroid...)';
-PRINT '- Đơn hàng mẫu: 9 đơn (khách vãng lai)';
-PRINT '';
-PRINT 'LƯU Ý:';
-PRINT '- Bảng người dùng (AspNetUsers) sẽ được tạo tự động bởi Identity';
-PRINT '- Tạo users qua trang Register hoặc seed data trong code';
-PRINT '- Sau khi có users, có thể thêm FK constraint:';
-PRINT '  ALTER TABLE DonHang ADD CONSTRAINT FK_DonHang_AspNetUsers';
-PRINT '  FOREIGN KEY (UserId) REFERENCES AspNetUsers(Id);';
-PRINT '';
-PRINT 'ReVeluv, Carat và Queen''s (T-ara fans) thì chuẩn bị tiền nha! 🎤';
-PRINT 'Kim Tae Ri fan meeting trong mơ đây rồi! 💕';
-PRINT '============================================';
-GO

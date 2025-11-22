@@ -1,8 +1,126 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<QuanLySuKien.Models.SuKien>
+
+@{
+    ViewData["Title"] = "Trang Chủ";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- Hero Section -->
+<div class="hero-section bg-primary text-white text-center py-5 mb-5">
+    <div class="container">
+        <h1 class="display-3 fw-bold mb-3">Hệ Thống Quản Lý Sự Kiện</h1>
+        <p class="lead mb-4">Khám phá và đặt vé các sự kiện âm nhạc, nghệ thuật hấp dẫn nhất</p>
+        <a asp-controller="SuKiens" asp-action="Index" class="btn btn-light btn-lg px-5">Xem Tất Cả Sự Kiện</a>
+    </div>
 </div>
+
+<!-- Upcoming Events Section -->
+<div class="container mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Sự Kiện Sắp Diễn Ra</h2>
+        <a asp-controller="SuKiens" asp-action="Index" class="btn btn-outline-primary">Xem Thêm →</a>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="row g-4">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm hover-shadow">
+                        @if (!string.IsNullOrEmpty(item.AnhBia))
+                        {
+                            <img src="@item.AnhBia" class="card-img-top" alt="@item.TenSuKien" style="height: 200px; object-fit: cover;">
+                        }
+                        else
+                        {
+                            <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+                                <i class="bi bi-calendar-event" style="font-size: 3rem; color: white;"></i>
+                            </div>
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">@item.TenSuKien</h5>
+                            <p class="card-text text-muted mb-2">
+                                <i class="bi bi-calendar3"></i> @item.NgayToChuc.ToString("dd/MM/yyyy") - @item.GioToChuc.ToString("HH:mm")
+                            </p>
+                            <p class="card-text text-muted mb-2">
+                                <i class="bi bi-geo-alt"></i> @item.DiaDiem.TenDiaDiem
+                            </p>
+                            @if (!string.IsNullOrEmpty(item.LoaiSuKien))
+                            {
+                                <span class="badge bg-info text-dark mb-3">@item.LoaiSuKien</span>
+                            }
+                            @if (!string.IsNullOrEmpty(item.MoTa) && item.MoTa.Length > 100)
+                            {
+                                <p class="card-text small">@item.MoTa.Substring(0, 100)...</p>
+                            }
+                            else if (!string.IsNullOrEmpty(item.MoTa))
+                            {
+                                <p class="card-text small">@item.MoTa</p>
+                            }
+                        </div>
+                        <div class="card-footer bg-transparent border-top-0">
+                            <a asp-controller="SuKiens" asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary w-100">
+                                Xem Chi Tiết
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center" role="alert">
+            <i class="bi bi-info-circle me-2"></i>
+            Hiện tại chưa có sự kiện nào sắp diễn ra. Vui lòng quay lại sau!
+        </div>
+    }
+</div>
+
+<!-- Features Section -->
+<div class="bg-light py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4 mb-4">
+                <div class="feature-box p-4">
+                    <i class="bi bi-ticket-perforated display-4 text-primary mb-3"></i>
+                    <h4>Đặt Vé Dễ Dàng</h4>
+                    <p class="text-muted">Đặt vé online nhanh chóng chỉ với vài click chuột</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-box p-4">
+                    <i class="bi bi-stars display-4 text-primary mb-3"></i>
+                    <h4>Sự Kiện Đa Dạng</h4>
+                    <p class="text-muted">Nhiều loại sự kiện phong phú từ âm nhạc đến nghệ thuật</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-box p-4">
+                    <i class="bi bi-shield-check display-4 text-primary mb-3"></i>
+                    <h4>An Toàn & Tin Cậy</h4>
+                    <p class="text-muted">Thanh toán an toàn, bảo mật thông tin khách hàng</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .hover-shadow {
+        transition: all 0.3s ease;
+    }
+    .hover-shadow:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important;
+    }
+    .feature-box {
+        transition: all 0.3s ease;
+    }
+    .feature-box:hover {
+        transform: scale(1.05);
+    }
+</style>

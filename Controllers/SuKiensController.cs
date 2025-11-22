@@ -10,22 +10,23 @@ using QuanLySuKien.Models;
 
 namespace QuanLySuKien.Controllers
 {
-    public class DiaDiemsController : Controller
+    public class SuKiensController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public DiaDiemsController(ApplicationDbContext context)
+        public SuKiensController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: DiaDiems
+        // GET: SuKiens
         public async Task<IActionResult> Index()
         {
-            return View(await _context.DiaDiems.ToListAsync());
+            var applicationDbContext = _context.SuKiens.Include(s => s.DiaDiem);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: DiaDiems/Details/5
+        // GET: SuKiens/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,14 +34,15 @@ namespace QuanLySuKien.Controllers
                 return NotFound();
             }
 
-            var diaDiem = await _context.DiaDiems
+            var suKien = await _context.SuKiens
+                .Include(s => s.DiaDiem)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (diaDiem == null)
+            if (suKien == null)
             {
                 return NotFound();
             }
 
-            return View(diaDiem);
+            return View(suKien);
         }
     }
 }

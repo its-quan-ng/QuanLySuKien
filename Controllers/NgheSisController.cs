@@ -10,22 +10,22 @@ using QuanLySuKien.Models;
 
 namespace QuanLySuKien.Controllers
 {
-    public class DiaDiemsController : Controller
+    public class NgheSisController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public DiaDiemsController(ApplicationDbContext context)
+        public NgheSisController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: DiaDiems
+        // GET: NgheSis
         public async Task<IActionResult> Index()
         {
-            return View(await _context.DiaDiems.ToListAsync());
+            return View(await _context.NgheSis.ToListAsync());
         }
 
-        // GET: DiaDiems/Details/5
+        // GET: NgheSis/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,14 +33,14 @@ namespace QuanLySuKien.Controllers
                 return NotFound();
             }
 
-            var diaDiem = await _context.DiaDiems
+            var ngheSi = await _context.NgheSis
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (diaDiem == null)
+            if (ngheSi == null)
             {
                 return NotFound();
             }
 
-            return View(diaDiem);
+            return View(ngheSi);
         }
     }
 }
