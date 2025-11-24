@@ -37,6 +37,47 @@
                 <h4>Bộ Lọc</h4>
             </div>
 
+            <!-- Location Filter -->
+            <div class="filter-section">
+                <h5 class="filter-title">Địa Điểm</h5>
+                <div class="filter-options">
+                    @{
+                        var locations = Model?.Select(s => s.DiaDiem.TenDiaDiem).Distinct().OrderBy(l => l).ToList();
+                        if (locations != null && locations.Any())
+                        {
+                            foreach (var location in locations)
+                            {
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="location" value="@location">
+                                    <span>@location</span>
+                                </label>
+                            }
+                        }
+                    }
+                </div>
+            </div>
+
+            <!-- Category Filter -->
+            <div class="filter-section">
+                <h5 class="filter-title">Thể Loại</h5>
+                <div class="filter-options">
+                    @{
+                        var categories = Model?.Where(s => !string.IsNullOrEmpty(s.LoaiSuKien))
+                            .Select(s => s.LoaiSuKien).Distinct().OrderBy(c => c).ToList();
+                        if (categories != null && categories.Any())
+                        {
+                            foreach (var category in categories)
+                            {
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="category" value="@category">
+                                    <span>@category</span>
+                                </label>
+                            }
+                        }
+                    }
+                </div>
+            </div>
+
             <!-- Price Filter -->
             <div class="filter-section">
                 <h5 class="filter-title">Giá Vé</h5>
@@ -50,82 +91,6 @@
                         <span>Có phí</span>
                     </label>
                 </div>
-            </div>
-
-            <!-- Date Filter -->
-            <div class="filter-section">
-                <h5 class="filter-title">Ngày</h5>
-                <div class="filter-options">
-                    <label class="filter-checkbox">
-                        <input type="checkbox" name="date" value="today">
-                        <span>Hôm nay</span>
-                    </label>
-                    <label class="filter-checkbox">
-                        <input type="checkbox" name="date" value="tomorrow">
-                        <span>Ngày mai</span>
-                    </label>
-                    <label class="filter-checkbox">
-                        <input type="checkbox" name="date" value="this-week">
-                        <span>Tuần này</span>
-                    </label>
-                    <label class="filter-checkbox">
-                        <input type="checkbox" name="date" value="this-weekend">
-                        <span>Cuối tuần này</span>
-                    </label>
-                    <label class="filter-checkbox">
-                        <input type="checkbox" name="date" value="pick-date">
-                        <span>Chọn ngày</span>
-                    </label>
-                </div>
-                <a href="#" class="filter-more-link">Xem thêm</a>
-            </div>
-
-            <!-- Category Filter -->
-            <div class="filter-section">
-                <h5 class="filter-title">Thể Loại</h5>
-                <div class="filter-options">
-                    <label class="filter-checkbox">
-                        <input type="checkbox" name="category" value="concerts">
-                        <span>Hòa nhạc & Biểu diễn</span>
-                    </label>
-                    <label class="filter-checkbox">
-                        <input type="checkbox" name="category" value="festivals">
-                        <span>Lễ hội & Sự kiện đặc biệt</span>
-                    </label>
-                    <label class="filter-checkbox">
-                        <input type="checkbox" name="category" value="business">
-                        <span>Kinh doanh & Networking</span>
-                    </label>
-                    <label class="filter-checkbox">
-                        <input type="checkbox" name="category" value="food">
-                        <span>Ẩm thực & Đồ uống</span>
-                    </label>
-                    <label class="filter-checkbox">
-                        <input type="checkbox" name="category" value="arts">
-                        <span>Nghệ thuật & Văn hóa</span>
-                    </label>
-                </div>
-                <a href="#" class="filter-more-link">Xem thêm</a>
-            </div>
-
-            <!-- Format Filter -->
-            <div class="filter-section">
-                <h5 class="filter-title">Định Dạng</h5>
-                <div class="filter-options">
-                    <label class="filter-checkbox">
-                        <input type="checkbox" name="format" value="online">
-                        <span>Sự kiện trực tuyến</span>
-                    </label>
-                    <label class="filter-checkbox">
-                        <input type="checkbox" name="format" value="offline">
-                        <span>Sự kiện trực tiếp</span>
-                    </label>
-                    <label class="filter-checkbox">
-                        <input type="checkbox" name="format" value="hybrid">
-                        <span>Kết hợp</span>
-                    </label>
-                </div>
-                <a href="#" class="filter-more-link">Xem thêm</a>
             </div>
         </div>
 

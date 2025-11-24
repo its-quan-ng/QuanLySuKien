@@ -119,10 +119,9 @@ function filterEvents() {
     const locationValue = document.getElementById('searchLocation')?.value.toLowerCase() || '';
 
     // Get selected filters
-    const selectedPrices = getSelectedFilters('price');
-    const selectedDates = getSelectedFilters('date');
+    const selectedLocations = getSelectedFilters('location');
     const selectedCategories = getSelectedFilters('category');
-    const selectedFormats = getSelectedFilters('format');
+    const selectedPrices = getSelectedFilters('price');
 
     // Get all event cards
     const eventCards = document.querySelectorAll('.event-card');
@@ -141,10 +140,28 @@ function filterEvents() {
             }
         }
 
-        // Location filter
+        // Location dropdown filter
         if (locationValue) {
             const venue = card.querySelector('.event-card-venue span')?.textContent.toLowerCase() || '';
             if (!venue.includes(locationValue)) {
+                shouldShow = false;
+            }
+        }
+
+        // Location checkbox filter (sidebar)
+        if (selectedLocations.length > 0) {
+            const venue = card.querySelector('.event-card-venue span')?.textContent || '';
+            const matchesLocation = selectedLocations.some(loc => venue.includes(loc));
+            if (!matchesLocation) {
+                shouldShow = false;
+            }
+        }
+
+        // Category filter
+        if (selectedCategories.length > 0) {
+            const category = card.dataset.loai || '';
+            const matchesCategory = selectedCategories.some(cat => category.includes(cat));
+            if (!matchesCategory) {
                 shouldShow = false;
             }
         }
@@ -161,13 +178,6 @@ function filterEvents() {
             if (!showFree && !showPaid) {
                 shouldShow = false;
             }
-        }
-
-        // Category filter (if needed, match with data-loai attribute)
-        if (selectedCategories.length > 0) {
-            const category = card.dataset.loai?.toLowerCase() || '';
-            // For now, just show all if any category is selected
-            // You can implement more specific matching later
         }
 
         // Show/hide card
