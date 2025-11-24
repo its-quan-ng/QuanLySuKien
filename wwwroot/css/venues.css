@@ -15,13 +15,21 @@
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
 }
 
 .venue-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 28px rgba(27, 58, 95, 0.18);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 16px 32px rgba(27, 58, 95, 0.2);
+}
+
+.venue-card:hover .venue-card-image {
+    background-size: 120% !important;
+}
+
+.venue-card:hover .venue-icon-wrapper {
+    transform: scale(1.1) rotate(5deg);
 }
 
 .venue-card-overlay {
@@ -40,12 +48,72 @@
     align-items: center;
     justify-content: center;
     position: relative;
+    overflow: hidden;
+    background-size: 100% !important;
+    transition: all 0.4s ease;
+}
+
+.venue-card-image::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.venue-card-image::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -30%;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.venue-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    position: relative;
+    z-index: 1;
+    transition: all 0.4s ease;
 }
 
 .venue-icon {
-    font-size: 70px;
-    color: rgba(255, 255, 255, 0.9);
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+    font-size: 36px;
+    color: white;
+    transition: transform 0.3s ease;
+}
+
+.venue-card:hover .venue-icon {
+    transform: scale(1.1);
+}
+
+.venue-card-overlay-text {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    padding: 8px 12px;
+    border-radius: 6px;
+    z-index: 1;
 }
 
 .venue-card-content {

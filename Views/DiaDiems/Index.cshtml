@@ -35,7 +35,10 @@
                     <a asp-controller="DiaDiems" asp-action="Details" asp-route-id="@venue.Id" class="venue-card-overlay"></a>
 
                     <div class="venue-card-image" style="background: @gradient;">
-                        <i class="@icon venue-icon"></i>
+                        <div class="venue-icon-wrapper">
+                            <i class="@icon venue-icon"></i>
+                        </div>
+                        <div class="venue-card-overlay-text">@venue.TenDiaDiem</div>
                     </div>
 
                     <div class="venue-card-content">
