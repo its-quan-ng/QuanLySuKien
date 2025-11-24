@@ -342,11 +342,31 @@ body {
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
+    position: relative;
 }
 
 .event-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 20px rgba(27, 58, 95, 0.15);
+}
+
+/* Card Overlay Link - Makes entire card clickable */
+.event-card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    cursor: pointer;
+}
+
+/* Make favorite button and other interactive elements stay above overlay */
+.event-favorite-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
 }
 
 /* Event Card Image */
@@ -407,9 +427,6 @@ body {
 
 /* Favorite Button */
 .event-favorite-btn {
-    position: absolute;
-    top: 12px;
-    right: 12px;
     width: 36px;
     height: 36px;
     border-radius: 50%;

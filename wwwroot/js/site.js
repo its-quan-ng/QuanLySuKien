@@ -18,6 +18,7 @@ function initEventListingPage() {
     initSearchFunctionality();
     initFilterFunctionality();
     initSortFunctionality();
+    initCardClickNavigation();
 }
 
 // Favorite Button Toggle

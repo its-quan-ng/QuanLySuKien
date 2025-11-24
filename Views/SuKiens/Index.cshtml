@@ -149,6 +149,9 @@
                     @foreach (var item in Model)
                     {
                         <div class="event-card" data-loai="@item.LoaiSuKien">
+                            <!-- Card Overlay Link -->
+                            <a asp-controller="SuKiens" asp-action="Details" asp-route-id="@item.Id" class="event-card-overlay"></a>
+
                             <div class="event-card-image">
                                 @if (!string.IsNullOrEmpty(item.AnhBia))
                                 {
