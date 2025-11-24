@@ -158,21 +158,75 @@
                 }
 
                 <!-- Other Events Section -->
-                <div class="event-detail-section">
-                    <h3 class="section-title">Sự Kiện Khác Bạn Có Thể Thích</h3>
-                    <div class="related-events-carousel">
-                        <button class="carousel-nav-btn prev">
-                            <i class="bi bi-chevron-left"></i>
-                        </button>
-                        <div class="related-events-container">
-                            <!-- Related events will be populated here via controller -->
-                            <p class="text-muted text-center">Đang tải sự kiện liên quan...</p>
+                @if (ViewBag.RelatedEvents != null && ((List<QuanLySuKien.Models.SuKien>)ViewBag.RelatedEvents).Any())
+                {
+                    <div class="event-detail-section">
+                        <h3 class="section-title">Sự Kiện Khác Bạn Có Thể Thích</h3>
+                        <div class="related-events-carousel">
+                            <button class="carousel-nav-btn prev" onclick="scrollRelatedEvents('left')">
+                                <i class="bi bi-chevron-left"></i>
+                            </button>
+                            <div class="related-events-container" id="relatedEventsContainer">
+                                @foreach (var relatedEvent in (List<QuanLySuKien.Models.SuKien>)ViewBag.RelatedEvents)
+                                {
+                                    <div class="related-event-card">
+                                        <a asp-controller="SuKiens" asp-action="Details" asp-route-id="@relatedEvent.Id" class="related-event-link">
+                                            <div class="related-event-image">
+                                                @if (!string.IsNullOrEmpty(relatedEvent.AnhBia))
+                                                {
+                                                    <img src="@relatedEvent.AnhBia" alt="@relatedEvent.TenSuKien">
+                                                }
+                                                else
+                                                {
+                                                    <div class="related-event-placeholder">
+                                                        <i class="bi bi-calendar-event"></i>
+                                                    </div>
+                                                }
+                                                @if (!string.IsNullOrEmpty(relatedEvent.LoaiSuKien))
+                                                {
+                                                    <span class="related-event-badge">@relatedEvent.LoaiSuKien</span>
+                                                }
+                                            </div>
+                                            <div class="related-event-content">
+                                                <div class="related-event-date">
+                                                    <span class="date-month">@relatedEvent.NgayToChuc.ToString("MMM").ToUpper()</span>
+                                                    <span class="date-day">@relatedEvent.NgayToChuc.Day</span>
+                                                </div>
+                                                <h4 class="related-event-title">@relatedEvent.TenSuKien</h4>
+                                                <p class="related-event-venue">
+                                                    <i class="bi bi-geo-alt"></i>
+                                                    @relatedEvent.DiaDiem.TenDiaDiem
+                                                </p>
+                                                <p class="related-event-time">
+                                                    <i class="bi bi-clock"></i>
+                                                    @relatedEvent.GioToChuc.ToString("HH:mm")
+                                                </p>
+                                                @if (relatedEvent.LoaiVes != null && relatedEvent.LoaiVes.Any())
+                                                {
+                                                    var minPrice = relatedEvent.LoaiVes.Min(v => v.GiaVe);
+                                                    <p class="related-event-price">
+                                                        <i class="bi bi-ticket-perforated"></i>
+                                                        @if (minPrice == 0)
+                                                        {
+                                                            <span>Miễn phí</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>@minPrice.ToString("N0") VNĐ</span>
+                                                        }
+                                                    </p>
+                                                }
+                                            </div>
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+                            <button class="carousel-nav-btn next" onclick="scrollRelatedEvents('right')">
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
                         </div>
-                        <button class="carousel-nav-btn next">
-                            <i class="bi bi-chevron-right"></i>
-                        </button>
                     </div>
-                </div>
+                }
             </div>
 
             <!-- Right Sidebar -->

@@ -4,6 +4,7 @@
 // Wait for DOM to be ready
 document.addEventListener('DOMContentLoaded', function() {
     initEventListingPage();
+    initEventDetailPage();
 });
 
 // ===================================
@@ -271,5 +272,142 @@ function showNoResultsMessage(visibleCount) {
         if (noResultsMsg) {
             noResultsMsg.style.display = 'none';
         }
+    }
+}
+
+// ===================================
+// EVENT DETAIL PAGE FUNCTIONALITY
+// ===================================
+
+function initEventDetailPage() {
+    // Check if we're on the event detail page
+    if (!document.querySelector('.event-detail-page')) return;
+
+    initDetailFavoriteButton();
+    initShareButtons();
+}
+
+// Related Events Carousel Scroll
+function scrollRelatedEvents(direction) {
+    const container = document.getElementById('relatedEventsContainer');
+    if (!container) return;
+
+    const scrollAmount = 300;
+    if (direction === 'left') {
+        container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    } else {
+        container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+}
+
+// Make function global so onclick can access it
+window.scrollRelatedEvents = scrollRelatedEvents;
+
+// Favorite Button on Detail Page
+function initDetailFavoriteButton() {
+    const favoriteBtn = document.querySelector('.event-detail-actions .favorite-btn');
+    
+    if (!favoriteBtn) return;
+
+    const eventId = favoriteBtn.dataset.eventId;
+
+    // Load favorite state from localStorage
+    const favorites = JSON.parse(localStorage.getItem('eventFavorites') || '[]');
+    if (favorites.includes(eventId)) {
+        favoriteBtn.classList.add('active');
+        const icon = favoriteBtn.querySelector('i');
+        icon.classList.remove('bi-star');
+        icon.classList.add('bi-star-fill');
+    }
+
+    // Toggle favorite
+    favoriteBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        this.classList.toggle('active');
+        const icon = this.querySelector('i');
+        icon.classList.toggle('bi-star');
+        icon.classList.toggle('bi-star-fill');
+
+        toggleFavoriteInStorage(eventId);
+    });
+}
+
+// Share Buttons Functionality
+function initShareButtons() {
+    const shareButtons = document.querySelectorAll('.sidebar-share .share-btn');
+    const currentUrl = window.location.href;
+    const eventTitle = document.querySelector('.event-detail-title')?.textContent || 'Sự kiện';
+
+    shareButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            if (this.classList.contains('facebook')) {
+                // Facebook Share
+                const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`;
+                window.open(facebookUrl, '_blank', 'width=600,height=400');
+            } 
+            else if (this.classList.contains('twitter')) {
+                // Twitter Share
+                const twitterUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(eventTitle)}`;
+                window.open(twitterUrl, '_blank', 'width=600,height=400');
+            } 
+            else if (this.classList.contains('linkedin')) {
+                // LinkedIn Share
+                const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`;
+                window.open(linkedinUrl, '_blank', 'width=600,height=400');
+            } 
+            else if (this.classList.contains('copy')) {
+                // Copy Link
+                copyToClipboard(currentUrl);
+                
+                // Show feedback
+                const originalIcon = this.innerHTML;
+                this.innerHTML = '<i class="bi bi-check2"></i>';
+                this.style.background = '#28a745';
+                
+                setTimeout(() => {
+                    this.innerHTML = originalIcon;
+                    this.style.background = '';
+                }, 2000);
+            }
+        });
+    });
+
+    // Share button in header
+    const headerShareBtn = document.querySelector('.event-detail-actions .share-btn');
+    if (headerShareBtn) {
+        headerShareBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Try Web Share API first (mobile)
+            if (navigator.share) {
+                navigator.share({
+                    title: eventTitle,
+                    url: currentUrl
+                }).catch(err => console.log('Share cancelled'));
+            } else {
+                // Fallback: copy link
+                copyToClipboard(currentUrl);
+                alert('Đã copy link sự kiện!');
+            }
+        });
+    }
+}
+
+// Copy to Clipboard Helper
+function copyToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text);
+    } else {
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
     }
 }

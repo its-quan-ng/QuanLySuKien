@@ -50,6 +50,19 @@ namespace QuanLySuKien.Controllers
                 return NotFound();
             }
 
+            // Get related events (same venue or same category, excluding current event)
+            var relatedEvents = await _context.SuKiens
+                .Include(s => s.DiaDiem)
+                .Include(s => s.LoaiVes)
+                .Where(s => s.Id != id &&
+                       s.TrangThai == "SapDienRa" &&
+                       (s.DiaDiemId == suKien.DiaDiemId || s.LoaiSuKien == suKien.LoaiSuKien))
+                .OrderBy(s => s.NgayToChuc)
+                .Take(6)
+                .ToListAsync();
+
+            ViewBag.RelatedEvents = relatedEvents;
+
             return View(suKien);
         }
     }

@@ -13,7 +13,9 @@
 .event-detail-image {
     width: 100%;
     height: 400px;
-    object-fit: cover;
+    object-fit: contain;
+    object-position: center;
+    background: white;
 }
 
 .event-detail-placeholder {
