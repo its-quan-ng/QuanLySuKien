@@ -66,12 +66,11 @@
                         }
                     </div>
 
-                    <!-- Google Maps Embed Placeholder -->
+                    <!-- Interactive Map -->
                     <div class="event-map">
-                        <div class="map-placeholder">
-                            <i class="bi bi-geo-alt-fill"></i>
-                            <p>Bản đồ sẽ được hiển thị tại đây</p>
-                            <small>@Model.DiaDiem.TenDiaDiem</small>
+                        <div id="eventMap" class="map-container"
+                             data-venue="@Model.DiaDiem.TenDiaDiem"
+                             data-address="@Model.DiaDiem.DiaChi">
                         </div>
                     </div>
                 </div>

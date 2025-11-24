@@ -153,33 +153,32 @@
     margin-top: 20px;
     border-radius: 8px;
     overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.map-placeholder {
-    height: 250px;
-    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+.map-container {
+    height: 300px;
+    width: 100%;
+    background: #f5f5f5;
 }
 
-.map-placeholder i {
-    font-size: 48px;
-    color: var(--burgundy);
-    margin-bottom: 12px;
+.leaflet-popup-content-wrapper {
+    border-radius: 8px;
 }
 
-.map-placeholder p {
-    font-size: 16px;
-    color: #666;
-    margin: 0 0 4px 0;
+.leaflet-popup-content {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.map-placeholder small {
+.map-popup-title {
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 4px;
+}
+
+.map-popup-address {
     font-size: 13px;
-    color: #999;
+    color: #666;
 }
 
 /* Ticket Information */

@@ -285,6 +285,7 @@ function initEventDetailPage() {
 
     initDetailFavoriteButton();
     initShareButtons();
+    initEventMap();
 }
 
 // Related Events Carousel Scroll
@@ -410,4 +411,61 @@ function copyToClipboard(text) {
         document.execCommand('copy');
         document.body.removeChild(textarea);
     }
+}
+
+// Initialize Event Map with Leaflet
+function initEventMap() {
+    const mapElement = document.getElementById('eventMap');
+    if (!mapElement) return;
+
+    const venueName = mapElement.dataset.venue;
+    const venueAddress = mapElement.dataset.address;
+
+    // Default coordinates for major Vietnam cities
+    const cityCoordinates = {
+        'Hà Nội': [21.028511, 105.804817],
+        'TP.HCM': [10.762622, 106.660172],
+        'TP. Hồ Chí Minh': [10.762622, 106.660172],
+        'Đà Nẵng': [16.047079, 108.206230],
+        'Hưng Yên': [20.646469, 106.051361]
+    };
+
+    // Try to determine coordinates from address
+    let coordinates = [21.028511, 105.804817]; // Default: Hanoi center
+
+    // Check if address contains city name
+    for (const [city, coords] of Object.entries(cityCoordinates)) {
+        if (venueAddress.includes(city)) {
+            coordinates = coords;
+            break;
+        }
+    }
+
+    // Initialize map
+    const map = L.map('eventMap').setView(coordinates, 15);
+
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        maxZoom: 19
+    }).addTo(map);
+
+    // Custom marker icon (burgundy)
+    const customIcon = L.divIcon({
+        className: 'custom-map-marker',
+        html: '<i class="bi bi-geo-alt-fill" style="color: #8B1538; font-size: 32px;"></i>',
+        iconSize: [32, 40],
+        iconAnchor: [16, 40]
+    });
+
+    // Add marker
+    const marker = L.marker(coordinates, { icon: customIcon }).addTo(map);
+
+    // Add popup
+    marker.bindPopup(`
+        <div class="map-popup-content">
+            <div class="map-popup-title">${venueName}</div>
+            <div class="map-popup-address">${venueAddress}</div>
+        </div>
+    `).openPopup();
 }
