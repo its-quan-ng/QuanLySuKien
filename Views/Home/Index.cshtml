@@ -4,57 +4,126 @@
     ViewData["Title"] = "Trang Chủ";
 }
 
-<!-- Hero Section -->
-<div class="hero-section text-white text-center py-5 mb-5">
-    <div class="container">
-        <h1 class="display-3 fw-bold mb-3">Khám Phá Sự Kiện</h1>
-        <p class="lead mb-4">Trải nghiệm những sự kiện âm nhạc và nghệ thuật đẳng cấp</p>
-        <a asp-controller="SuKiens" asp-action="Index" class="btn btn-hero btn-lg px-5 shadow">Khám Phá Ngay</a>
+<!-- Hero Carousel Section -->
+<div id="heroCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel" data-bs-interval="5000">
+    <div class="carousel-indicators">
+        @if (ViewBag.CarouselEvents != null && ((List<QuanLySuKien.Models.SuKien>)ViewBag.CarouselEvents).Any())
+        {
+            var carouselItems = (List<QuanLySuKien.Models.SuKien>)ViewBag.CarouselEvents;
+            @for (int i = 0; i < carouselItems.Count; i++)
+            {
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="@i"
+                        class="@(i == 0 ? "active" : "")" aria-current="@(i == 0 ? "true" : "false")"></button>
+            }
+        }
     </div>
+
+    <div class="carousel-inner">
+        @if (ViewBag.CarouselEvents != null && ((List<QuanLySuKien.Models.SuKien>)ViewBag.CarouselEvents).Any())
+        {
+            int slideIndex = 0;
+            @foreach (var item in (List<QuanLySuKien.Models.SuKien>)ViewBag.CarouselEvents)
+            {
+                <div class="carousel-item @(slideIndex == 0 ? "active" : "")">
+                    <div class="hero-slide">
+                        <div class="hero-image-wrapper">
+                            @if (!string.IsNullOrEmpty(item.AnhBia))
+                            {
+                                <img src="@item.AnhBia" class="hero-image" alt="@item.TenSuKien">
+                            }
+                            else
+                            {
+                                <div class="hero-placeholder">
+                                    <i class="bi bi-calendar-event"></i>
+                                </div>
+                            }
+                            <div class="hero-overlay"></div>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(item.LoaiSuKien))
+                        {
+                            <span class="hero-badge">@item.LoaiSuKien</span>
+                        }
+
+                        <div class="hero-content">
+                            <div class="container">
+                                <h1 class="hero-title">@item.TenSuKien</h1>
+                                <div class="hero-meta">
+                                    <span class="hero-meta-item">
+                                        <i class="bi bi-calendar3"></i>
+                                        @item.NgayToChuc.ToString("dd/MM/yyyy")
+                                    </span>
+                                    <span class="hero-meta-item">
+                                        <i class="bi bi-clock"></i>
+                                        @item.GioToChuc.ToString("HH:mm")
+                                    </span>
+                                    <span class="hero-meta-item">
+                                        <i class="bi bi-geo-alt"></i>
+                                        @item.DiaDiem.TenDiaDiem
+                                    </span>
+                                </div>
+                                <div class="hero-actions">
+                                    <a asp-controller="SuKiens" asp-action="Details" asp-route-id="@item.Id"
+                                       class="btn btn-hero-primary">
+                                        Xem Chi Tiết
+                                    </a>
+                                    <a asp-controller="SuKiens" asp-action="Index"
+                                       class="btn btn-hero-secondary">
+                                        Khám Phá Thêm
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                slideIndex++;
+            }
+        }
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
 </div>
 
 <!-- Explore Categories Section -->
-<div class="container mb-5">
-    <h2 class="text-center fw-bold text-navy mb-4">Khám Phá Theo Thể Loại</h2>
-    <div class="categories-scroll">
-        <a asp-controller="SuKiens" asp-action="Index" class="category-circle">
-            <div class="category-icon">
-                <i class="bi bi-music-note-beamed"></i>
-            </div>
-            <span>Âm Nhạc</span>
-        </a>
-        <a asp-controller="SuKiens" asp-action="Index" class="category-circle">
-            <div class="category-icon">
-                <i class="bi bi-palette"></i>
-            </div>
-            <span>Nghệ Thuật</span>
-        </a>
-        <a asp-controller="SuKiens" asp-action="Index" class="category-circle">
-            <div class="category-icon">
-                <i class="bi bi-balloon"></i>
-            </div>
-            <span>Lễ Hội</span>
-        </a>
-        <a asp-controller="SuKiens" asp-action="Index" class="category-circle">
-            <div class="category-icon">
-                <i class="bi bi-briefcase"></i>
-            </div>
-            <span>Kinh Doanh</span>
-        </a>
-        <a asp-controller="SuKiens" asp-action="Index" class="category-circle">
-            <div class="category-icon">
-                <i class="bi bi-cup-hot"></i>
-            </div>
-            <span>Ẩm Thực</span>
-        </a>
-        <a asp-controller="SuKiens" asp-action="Index" class="category-circle">
-            <div class="category-icon">
-                <i class="bi bi-trophy"></i>
-            </div>
-            <span>Thể Thao</span>
-        </a>
+@{
+    var categoryCounts = ViewBag.CategoryCounts as List<dynamic>;
+
+    var categoryIcons = new Dictionary<string, string>() {
+        { "Concert", "bi-music-note-beamed" },
+        { "Fan Meeting", "bi-heart-fill" },
+        { "Acoustic Live", "bi-guitar" },
+        { "Festival", "bi-balloon" },
+        { "Workshop", "bi-pencil" },
+        { "default", "bi-calendar-event" }
+    };
+}
+
+@if (categoryCounts != null && categoryCounts.Any())
+{
+    <div class="container mb-5">
+        <h2 class="text-center fw-bold text-navy mb-4">Khám Phá Theo Thể Loại</h2>
+        <div class="categories-grid">
+            @foreach (var cat in categoryCounts)
+            {
+                var icon = categoryIcons.ContainsKey(cat.Category) ? categoryIcons[cat.Category] : categoryIcons["default"];
+                <a asp-controller="SuKiens" asp-action="Index" class="category-card">
+                    <i class="@icon"></i>
+                    <div class="category-info">
+                        <h4>@cat.Category</h4>
+                        <span>@cat.Count sự kiện</span>
+                    </div>
+                </a>
+            }
+        </div>
     </div>
-</div>
+}
 
 <!-- Upcoming Events Section -->
 <div class="container mb-5">
@@ -150,59 +219,73 @@
 </div>
 
 <style>
-    /* Category Circles */
-    .categories-scroll {
-        display: flex;
-        gap: 24px;
-        overflow-x: auto;
+    /* Category Cards */
+    .categories-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
         padding: 20px 0;
-        scrollbar-width: none;
-        justify-content: center;
     }
 
-    .categories-scroll::-webkit-scrollbar {
-        display: none;
-    }
-
-    .category-circle {
-        flex: 0 0 auto;
-        text-align: center;
+    .category-card {
+        background: var(--burgundy);
+        padding: 24px 20px;
+        border-radius: 8px;
         text-decoration: none;
         transition: all 0.3s ease;
-    }
-
-    .category-icon {
-        width: 90px;
-        height: 90px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, var(--burgundy) 0%, var(--navy) 100%);
         display: flex;
         align-items: center;
-        justify-content: center;
-        margin-bottom: 12px;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(139, 21, 56, 0.2);
+        gap: 16px;
+        box-shadow: 0 2px 8px rgba(139, 21, 56, 0.3);
+        position: relative;
+        overflow: hidden;
     }
 
-    .category-icon i {
-        font-size: 36px;
+    .category-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100px;
+        height: 100%;
+        background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 100%);
+    }
+
+    .category-card i {
+        font-size: 32px;
         color: white;
+        flex-shrink: 0;
+        position: relative;
+        z-index: 1;
     }
 
-    .category-circle span {
-        display: block;
-        font-size: 14px;
-        font-weight: 600;
-        color: var(--navy);
+    .category-info {
+        flex: 1;
+        position: relative;
+        z-index: 1;
     }
 
-    .category-circle:hover .category-icon {
-        transform: translateY(-8px) scale(1.1);
-        box-shadow: 0 8px 20px rgba(139, 21, 56, 0.3);
+    .category-info h4 {
+        font-size: 16px;
+        font-weight: 700;
+        color: white;
+        margin: 0 0 4px 0;
     }
 
-    .category-circle:hover span {
-        color: var(--burgundy);
+    .category-info span {
+        font-size: 13px;
+        color: var(--beige);
+        opacity: 0.95;
+    }
+
+    .category-card:hover {
+        background: var(--burgundy-light);
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(139, 21, 56, 0.4);
+    }
+
+    .category-card:hover i {
+        transform: scale(1.1);
     }
 
     /* Color Palette - Burgundy Red & Navy Blue with White & Beige */
@@ -214,40 +297,232 @@
         --navy-light: #2C5282;
     }
 
-    .hero-section {
-        background: linear-gradient(135deg, var(--burgundy) 0%, var(--navy) 100%);
+    /* Hero Carousel */
+    .hero-carousel {
+        margin-bottom: 60px;
+    }
+
+    .hero-slide {
         position: relative;
+        height: 500px;
         overflow: hidden;
     }
 
-    .hero-section::before {
-        content: '';
+    .hero-image-wrapper {
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
     }
 
-    .hero-section .container {
-        position: relative;
-        z-index: 1;
+    .hero-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
     }
 
-    .btn-hero {
-        background-color: white;
-        color: var(--burgundy);
+    .hero-placeholder {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, var(--burgundy) 0%, var(--navy) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hero-placeholder i {
+        font-size: 100px;
+        color: rgba(255,255,255,0.3);
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 50%, transparent 100%);
+    }
+
+    .hero-content {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        text-align: left;
+        color: white;
+        padding-bottom: 60px;
+    }
+
+    .hero-badge {
+        position: absolute;
+        top: 24px;
+        left: 24px;
+        display: inline-block;
+        background: rgba(255, 193, 7, 0.95);
+        color: #333;
+        padding: 8px 18px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        z-index: 11;
+    }
+
+    .hero-title {
+        font-size: 42px;
+        font-weight: 800;
+        margin-bottom: 16px;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        line-height: 1.2;
+        max-width: 800px;
+    }
+
+    .hero-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 24px;
+        max-width: 600px;
+    }
+
+    .hero-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 15px;
+        font-weight: 500;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 8px 16px;
+        border-radius: 6px;
+        backdrop-filter: blur(5px);
+        width: fit-content;
+    }
+
+    .hero-meta-item i {
+        font-size: 16px;
+    }
+
+    .hero-actions {
+        display: flex;
+        gap: 16px;
+    }
+
+    .btn-hero-primary {
+        background: var(--burgundy);
+        color: white;
         border: none;
+        padding: 14px 36px;
+        border-radius: 8px;
+        font-size: 16px;
         font-weight: 600;
         transition: all 0.3s ease;
     }
 
-    .btn-hero:hover {
-        background-color: var(--beige);
-        color: var(--burgundy);
+    .btn-hero-primary:hover {
+        background: var(--burgundy-light);
+        color: white;
         transform: translateY(-2px);
-        box-shadow: 0 8px 16px rgba(0,0,0,0.2) !important;
+        box-shadow: 0 8px 20px rgba(139, 21, 56, 0.4);
+    }
+
+    .btn-hero-secondary {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 2px solid white;
+        padding: 14px 36px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+    }
+
+    .btn-hero-secondary:hover {
+        background: white;
+        color: var(--navy);
+    }
+
+    .carousel-indicators [data-bs-target] {
+        width: 40px;
+        height: 4px;
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 2px;
+    }
+
+    .carousel-indicators .active {
+        background-color: white;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 60px;
+        opacity: 1;
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        width: 50px;
+        height: 50px;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 50%;
+        backdrop-filter: blur(10px);
+        background-image: none;
+    }
+
+    .carousel-control-prev-icon::after {
+        content: '\f285';
+        font-family: 'bootstrap-icons';
+        color: var(--burgundy);
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+
+    .carousel-control-next-icon::after {
+        content: '\f286';
+        font-family: 'bootstrap-icons';
+        color: var(--burgundy);
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+
+    .carousel-control-prev:hover .carousel-control-prev-icon,
+    .carousel-control-next:hover .carousel-control-next-icon {
+        background-color: white;
+        transform: scale(1.1);
+    }
+
+    @@media (max-width: 767px) {
+        .hero-slide {
+            height: 400px;
+        }
+
+        .hero-title {
+            font-size: 32px;
+        }
+
+        .hero-meta {
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .hero-actions {
+            flex-direction: column;
+        }
+
+        .hero-actions .btn {
+            width: 100%;
+        }
     }
 
     .text-burgundy { color: var(--burgundy) !important; }
