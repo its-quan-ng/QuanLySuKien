@@ -1,53 +1,74 @@
 ﻿@model IEnumerable<QuanLySuKien.Models.DiaDiem>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Địa Điểm";
+    var gradients = new[] {
+        "linear-gradient(135deg, #8B1538 0%, #A8244E 100%)",
+        "linear-gradient(135deg, #1B3A5F 0%, #2C5282 100%)",
+        "linear-gradient(135deg, #8B1538 0%, #1B3A5F 100%)",
+        "linear-gradient(135deg, #2C5282 0%, #8B1538 100%)"
+    };
+    var icons = new[] { "bi-building", "bi-geo-alt-fill", "bi-pin-map-fill", "bi-buildings" };
 }
 
-<h1>Index</h1>
+<!-- Hero Section -->
+<div class="hero-search-section">
+    <div class="container">
+        <h1 class="hero-title">Khám Phá Địa Điểm Sự Kiện</h1>
+        <p class="hero-subtitle">Tìm hiểu các venue tổ chức sự kiện hàng đầu</p>
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TenDiaDiem)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DiaChi)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SucChua)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MoTa)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TenDiaDiem)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DiaChi)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SucChua)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MoTa)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<!-- Venues Grid -->
+<div class="container venues-container">
+    <div class="venues-grid">
+        @if (Model != null && Model.Any())
+        {
+            int index = 0;
+            @foreach (var venue in Model)
+            {
+                var gradient = gradients[index % gradients.Length];
+                var icon = icons[index % icons.Length];
+                index++;
+
+                <div class="venue-card">
+                    <a asp-controller="DiaDiems" asp-action="Details" asp-route-id="@venue.Id" class="venue-card-overlay"></a>
+
+                    <div class="venue-card-image" style="background: @gradient;">
+                        <i class="@icon venue-icon"></i>
+                    </div>
+
+                    <div class="venue-card-content">
+                        <h3 class="venue-card-name">@venue.TenDiaDiem</h3>
+                        <p class="venue-card-address">
+                            <i class="bi bi-geo-alt"></i>
+                            @venue.DiaChi
+                        </p>
+                        <div class="venue-card-info">
+                            <div class="info-badge">
+                                <i class="bi bi-people"></i>
+                                <span>@venue.SucChua.ToString("N0")</span>
+                            </div>
+                            @{
+                                var eventCount = venue.SuKiens?.Count(s => s.TrangThai == "SapDienRa") ?? 0;
+                            }
+                            <div class="info-badge">
+                                <i class="bi bi-calendar-event"></i>
+                                <span>@eventCount sự kiện</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Chưa có địa điểm nào trong hệ thống.
+                </div>
+            </div>
+        }
+    </div>
+</div>

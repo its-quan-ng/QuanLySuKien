@@ -22,7 +22,10 @@ namespace QuanLySuKien.Controllers
         // GET: DiaDiems
         public async Task<IActionResult> Index()
         {
-            return View(await _context.DiaDiems.ToListAsync());
+            var diaDiems = await _context.DiaDiems
+                .Include(d => d.SuKiens)
+                .ToListAsync();
+            return View(diaDiems);
         }
 
         // GET: DiaDiems/Details/5
@@ -34,7 +37,10 @@ namespace QuanLySuKien.Controllers
             }
 
             var diaDiem = await _context.DiaDiems
+                .Include(d => d.SuKiens.Where(s => s.TrangThai == "SapDienRa"))
+                    .ThenInclude(s => s.LoaiVes)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (diaDiem == null)
             {
                 return NotFound();
