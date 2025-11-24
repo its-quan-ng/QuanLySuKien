@@ -1,0 +1,243 @@
+/* My Orders Page Styles */
+
+.my-orders-page {
+    padding: 60px 0;
+    background: linear-gradient(180deg, var(--beige) 0%, white 40%);
+    min-height: 80vh;
+}
+
+.my-orders-header {
+    margin-bottom: 40px;
+}
+
+.header-icon {
+    font-size: 60px;
+    color: var(--burgundy);
+    margin-bottom: 16px;
+}
+
+.my-orders-header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 12px;
+}
+
+.my-orders-header p {
+    font-size: 16px;
+    color: #666;
+}
+
+/* Search Card */
+.search-orders-card {
+    background: white;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    margin-bottom: 32px;
+}
+
+.email-input-wrapper {
+    position: relative;
+}
+
+.email-input-wrapper i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    font-size: 18px;
+}
+
+.email-input-wrapper .form-control {
+    padding-left: 48px;
+    height: 50px;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+.search-result-info {
+    margin-top: 20px;
+    padding: 12px 16px;
+    background: var(--beige);
+    border-radius: 6px;
+    font-size: 14px;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.search-result-info i {
+    color: var(--burgundy);
+}
+
+/* Orders List */
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.order-item {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background: var(--beige);
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.order-id {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.order-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.status-choduyet {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-daxacnhan {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-dahuy {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.order-body {
+    padding: 24px;
+}
+
+.order-event-info h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 12px;
+}
+
+.order-detail-item {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.order-detail-item i {
+    color: var(--burgundy);
+}
+
+.order-ticket-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 16px;
+    background: var(--beige);
+    border-radius: 8px;
+}
+
+.ticket-detail {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--navy);
+}
+
+.ticket-qty {
+    color: #666;
+    font-weight: 500;
+}
+
+.ticket-price {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--burgundy);
+}
+
+.order-footer-info {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.order-date {
+    font-size: 13px;
+    color: #999;
+}
+
+/* No Orders Found */
+.no-orders-found {
+    text-align: center;
+    padding: 60px 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.no-orders-found i {
+    font-size: 80px;
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+.no-orders-found h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 12px;
+}
+
+.no-orders-found p {
+    font-size: 15px;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.help-text {
+    font-size: 14px;
+    color: #999;
+}
+
+@media (max-width: 767px) {
+    .order-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .order-ticket-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+}

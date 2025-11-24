@@ -1,0 +1,122 @@
+@model IEnumerable<QuanLySuKien.Models.DonHang>
+
+@{
+    ViewData["Title"] = "Vé Của Tôi";
+}
+
+<div class="my-orders-page">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="my-orders-header text-center">
+                    <i class="bi bi-ticket-perforated-fill header-icon"></i>
+                    <h1>Vé Của Tôi</h1>
+                    <p>Tra cứu đơn hàng bằng email đã đặt vé</p>
+                </div>
+
+                <!-- Search Form -->
+                <div class="search-orders-card">
+                    <form asp-action="MyOrders" method="post">
+                        <div class="form-group">
+                            <label>Email đã đặt vé</label>
+                            <div class="email-input-wrapper">
+                                <i class="bi bi-envelope"></i>
+                                <input type="email" name="email" class="form-control"
+                                       placeholder="example@email.com"
+                                       value="@ViewBag.SearchEmail"
+                                       required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-burgundy w-100">
+                            <i class="bi bi-search"></i>
+                            Tìm Kiếm Đơn Hàng
+                        </button>
+                    </form>
+
+                    @if (!string.IsNullOrEmpty(ViewBag.SearchEmail))
+                    {
+                        <div class="search-result-info">
+                            <i class="bi bi-info-circle"></i>
+                            Kết quả cho: <strong>@ViewBag.SearchEmail</strong>
+                        </div>
+                    }
+                </div>
+
+                <!-- Orders List -->
+                @if (Model != null && Model.Any())
+                {
+                    <div class="orders-list">
+                        @foreach (var order in Model)
+                        {
+                            <div class="order-item">
+                                <div class="order-header">
+                                    <div class="order-id">
+                                        <i class="bi bi-hash"></i>
+                                        Đơn hàng #@order.Id
+                                    </div>
+                                    <div class="order-status status-@order.TrangThai.ToLower()">
+                                        @switch(order.TrangThai)
+                                        {
+                                            case "ChoDuyet":
+                                                <i class="bi bi-clock"></i>
+                                                <span>Chờ Duyệt</span>
+                                                break;
+                                            case "DaXacNhan":
+                                                <i class="bi bi-check-circle"></i>
+                                                <span>Đã Xác Nhận</span>
+                                                break;
+                                            case "DaHuy":
+                                                <i class="bi bi-x-circle"></i>
+                                                <span>Đã Hủy</span>
+                                                break;
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="order-body">
+                                    <div class="order-event-info">
+                                        <h4>@order.SuKien.TenSuKien</h4>
+                                        <p class="order-detail-item">
+                                            <i class="bi bi-calendar3"></i>
+                                            @order.SuKien.NgayToChuc.ToString("dd/MM/yyyy") - @order.SuKien.GioToChuc.ToString("HH:mm")
+                                        </p>
+                                        <p class="order-detail-item">
+                                            <i class="bi bi-geo-alt"></i>
+                                            @order.SuKien.DiaDiem.TenDiaDiem
+                                        </p>
+                                    </div>
+
+                                    <div class="order-ticket-info">
+                                        <div class="ticket-detail">
+                                            <i class="bi bi-ticket-perforated"></i>
+                                            <span>@order.LoaiVe.TenLoai</span>
+                                            <span class="ticket-qty">x @order.SoLuong</span>
+                                        </div>
+                                        <div class="ticket-price">
+                                            @order.TongTien.ToString("N0") VNĐ
+                                        </div>
+                                    </div>
+
+                                    <div class="order-footer-info">
+                                        <span class="order-date">
+                                            Đặt ngày: @order.NgayDat.ToString("dd/MM/yyyy HH:mm")
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else if (!string.IsNullOrEmpty(ViewBag.SearchEmail))
+                {
+                    <div class="no-orders-found">
+                        <i class="bi bi-inbox"></i>
+                        <h3>Không Tìm Thấy Đơn Hàng</h3>
+                        <p>Không có đơn hàng nào với email <strong>@ViewBag.SearchEmail</strong></p>
+                        <p class="help-text">Vui lòng kiểm tra lại email hoặc liên hệ hỗ trợ</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

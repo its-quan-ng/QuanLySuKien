@@ -132,6 +132,34 @@ namespace QuanLySuKien.Controllers
             }
         }
 
+        // GET: DonHangs/MyOrders
+        public IActionResult MyOrders()
+        {
+            return View();
+        }
+
+        // POST: DonHangs/MyOrders
+        [HttpPost]
+        public async Task<IActionResult> MyOrders(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                ModelState.AddModelError("", "Vui lòng nhập email!");
+                return View();
+            }
+
+            var orders = await _context.DonHangs
+                .Include(d => d.SuKien)
+                    .ThenInclude(s => s.DiaDiem)
+                .Include(d => d.LoaiVe)
+                .Where(d => d.Email.ToLower() == email.ToLower())
+                .OrderByDescending(d => d.NgayDat)
+                .ToListAsync();
+
+            ViewBag.SearchEmail = email;
+            return View(orders);
+        }
+
         // GET: DonHangs/Confirmation
         public async Task<IActionResult> Confirmation(string orderIds)
         {
