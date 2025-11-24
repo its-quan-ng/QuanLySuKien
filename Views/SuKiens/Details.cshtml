@@ -251,7 +251,7 @@
                                         <span class="price-value">@minPrice.ToString("N0") VNĐ</span>
                                     }
                                 </div>
-                                <button class="btn btn-buy-tickets">
+                                <button class="btn btn-buy-tickets" onclick="openTicketModal(@Model.Id)">
                                     <i class="bi bi-ticket-perforated-fill"></i>
                                     Mua Vé Ngay
                                 </button>
@@ -323,6 +323,135 @@
                                 <i class="bi bi-link-45deg"></i>
                             </button>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ticket Purchase Modal -->
+<div class="modal fade" id="ticketPurchaseModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content ticket-modal">
+            <!-- Modal Header -->
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                <!-- Step 1: Select Tickets -->
+                <div class="ticket-step" id="step1" style="display: block;">
+                    <h3 class="step-title">Chọn Vé</h3>
+
+                    <div class="ticket-types-selection">
+                        @if (Model.LoaiVes != null && Model.LoaiVes.Any())
+                        {
+                            @foreach (var loaiVe in Model.LoaiVes.Where(v => v.SoLuongConLai > 0))
+                            {
+                                <div class="ticket-type-selector" data-ticket-id="@loaiVe.Id" data-ticket-price="@loaiVe.GiaVe" data-ticket-name="@loaiVe.TenLoai">
+                                    <div class="ticket-selector-header">
+                                        <div class="ticket-info-left">
+                                            <h5 class="ticket-type-label">@loaiVe.TenLoai</h5>
+                                            <span class="ticket-price-label">@loaiVe.GiaVe.ToString("N0") VNĐ</span>
+                                        </div>
+                                        <div class="ticket-quantity-picker">
+                                            <button type="button" class="qty-btn minus" onclick="updateQuantity('@loaiVe.Id', -1)">−</button>
+                                            <input type="number" class="qty-input" id="qty-@loaiVe.Id" value="0" min="0" max="@loaiVe.SoLuongConLai" readonly>
+                                            <button type="button" class="qty-btn plus" onclick="updateQuantity('@loaiVe.Id', 1)">+</button>
+                                        </div>
+                                    </div>
+                                    <small class="ticket-availability-note">Còn @loaiVe.SoLuongConLai vé</small>
+                                </div>
+                            }
+                        }
+                    </div>
+
+                    <div class="step-footer">
+                        <div class="order-total">
+                            <span>Tổng: <strong id="step1Total">0 VNĐ</strong></span>
+                        </div>
+                        <button type="button" class="btn btn-step-next" onclick="goToStep(2)">
+                            Tiếp Theo <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Attendee Details -->
+                <div class="ticket-step" id="step2" style="display: none;">
+                    <button type="button" class="btn-back" onclick="goToStep(1)">
+                        <i class="bi bi-chevron-left"></i> Quay lại
+                    </button>
+                    <h3 class="step-title">Thông Tin Người Tham Dự</h3>
+
+                    <div class="attendee-info-header">
+                        <h4>@Model.TenSuKien</h4>
+                        <p class="event-date-info">
+                            <i class="bi bi-calendar3"></i>
+                            @Model.NgayToChuc.ToString("dd/MM/yyyy")
+                        </p>
+                    </div>
+
+                    <div id="attendeeFormsContainer">
+                        <!-- Attendee forms will be generated here -->
+                    </div>
+
+                    <div class="form-check mt-4 mb-3">
+                        <input type="checkbox" class="form-check-input" id="acceptTerms" required>
+                        <label class="form-check-label" for="acceptTerms">
+                            Tôi đồng ý với <a href="#" class="text-burgundy">Điều khoản dịch vụ</a> và đã đọc <a href="#" class="text-burgundy">Chính sách bảo mật</a>
+                        </label>
+                    </div>
+
+                    <div class="step-footer">
+                        <div class="order-total">
+                            <span>Tổng: <strong id="step2Total">0 VNĐ</strong></span>
+                        </div>
+                        <button type="button" class="btn btn-step-next" onclick="goToStep(3)">
+                            Tiếp Tục Thanh Toán <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Order Summary -->
+                <div class="ticket-step" id="step3" style="display: none;">
+                    <button type="button" class="btn-back" onclick="goToStep(2)">
+                        <i class="bi bi-chevron-left"></i> Quay lại
+                    </button>
+                    <h3 class="step-title">Xác Nhận Đơn Hàng</h3>
+
+                    <div class="order-summary-box">
+                        <div class="summary-section">
+                            <h5>Chi Tiết Vé</h5>
+                            <div id="ticketSummaryList"></div>
+                        </div>
+
+                        <div class="summary-section">
+                            <h5>Thông Tin Người Đặt</h5>
+                            <div id="attendeeSummary"></div>
+                        </div>
+
+                        <div class="summary-totals">
+                            <div class="total-row">
+                                <span>Tạm tính:</span>
+                                <span id="subtotal">0 VNĐ</span>
+                            </div>
+                            <div class="total-row">
+                                <span>Phí dịch vụ:</span>
+                                <span id="serviceFee">0 VNĐ</span>
+                            </div>
+                            <div class="total-row final-total">
+                                <span>Tổng cộng:</span>
+                                <span id="finalTotal">0 VNĐ</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-footer">
+                        <button type="button" class="btn btn-pay-now" onclick="submitOrder()">
+                            <i class="bi bi-lock-fill"></i> Thanh Toán Ngay
+                        </button>
                     </div>
                 </div>
             </div>

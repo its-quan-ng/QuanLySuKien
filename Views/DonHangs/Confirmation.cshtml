@@ -1,0 +1,145 @@
+@model QuanLySuKien.Models.ViewModels.OrderConfirmationViewModel
+
+@{
+    ViewData["Title"] = "Xác Nhận Đặt Vé";
+}
+
+<div class="confirmation-page">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Success Icon -->
+                <div class="confirmation-header text-center">
+                    <div class="success-icon">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </div>
+                    <h1 class="confirmation-title">Đặt Vé Thành Công!</h1>
+                    <p class="confirmation-subtitle">
+                        Cảm ơn bạn đã đặt vé. Thông tin chi tiết đã được gửi đến email của bạn.
+                    </p>
+                </div>
+
+                <!-- Order Details Card -->
+                <div class="confirmation-card">
+                    <!-- Event Info -->
+                    <div class="confirmation-section">
+                        <h3 class="section-title">
+                            <i class="bi bi-calendar-event"></i>
+                            Thông Tin Sự Kiện
+                        </h3>
+                        <div class="event-info-box">
+                            <h4>@Model.SuKien?.TenSuKien</h4>
+                            <p class="event-detail-item">
+                                <i class="bi bi-calendar3"></i>
+                                @Model.SuKien?.NgayToChuc.ToString("dddd, dd MMMM yyyy")
+                            </p>
+                            <p class="event-detail-item">
+                                <i class="bi bi-clock"></i>
+                                @Model.SuKien?.GioToChuc.ToString("HH:mm")
+                            </p>
+                            <p class="event-detail-item">
+                                <i class="bi bi-geo-alt"></i>
+                                @Model.SuKien?.DiaDiem.TenDiaDiem
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Ticket Details -->
+                    <div class="confirmation-section">
+                        <h3 class="section-title">
+                            <i class="bi bi-ticket-perforated"></i>
+                            Chi Tiết Vé
+                        </h3>
+                        <div class="tickets-list">
+                            @foreach (var donHang in Model.DonHangs)
+                            {
+                                <div class="ticket-item">
+                                    <div class="ticket-item-info">
+                                        <strong>@donHang.LoaiVe.TenLoai</strong>
+                                        <span class="ticket-qty">x @donHang.SoLuong</span>
+                                    </div>
+                                    <div class="ticket-item-price">
+                                        @donHang.TongTien.ToString("N0") VNĐ
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Customer Info -->
+                    <div class="confirmation-section">
+                        <h3 class="section-title">
+                            <i class="bi bi-person"></i>
+                            Thông Tin Người Đặt
+                        </h3>
+                        <div class="customer-info-box">
+                            <p><strong>Họ và Tên:</strong> @Model.TenKhachHang</p>
+                            <p><strong>Email:</strong> @Model.Email</p>
+                            <p><strong>Số Điện Thoại:</strong> @Model.DonHangs.First().SoDienThoai</p>
+                        </div>
+                    </div>
+
+                    <!-- Order Summary -->
+                    <div class="confirmation-section">
+                        <h3 class="section-title">
+                            <i class="bi bi-receipt"></i>
+                            Tóm Tắt Đơn Hàng
+                        </h3>
+                        <div class="order-summary-final">
+                            @{
+                                var subtotal = Model.DonHangs.Sum(d => d.TongTien);
+                                var serviceFee = Math.Round(subtotal * 0.05m);
+                                var total = subtotal + serviceFee;
+                            }
+                            <div class="summary-row">
+                                <span>Tạm tính:</span>
+                                <span>@subtotal.ToString("N0") VNĐ</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Phí dịch vụ (5%):</span>
+                                <span>@serviceFee.ToString("N0") VNĐ</span>
+                            </div>
+                            <div class="summary-row total-row">
+                                <span>Tổng cộng:</span>
+                                <span>@total.ToString("N0") VNĐ</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order IDs -->
+                    <div class="order-ids-section">
+                        <p class="order-id-label">Mã đơn hàng:</p>
+                        <p class="order-id-values">
+                            @string.Join(", ", Model.OrderIds.Select(id => "#" + id))
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="confirmation-actions text-center">
+                    <a asp-controller="SuKiens" asp-action="Details" asp-route-id="@Model.SuKien?.Id"
+                       class="btn btn-outline-burgundy btn-lg">
+                        <i class="bi bi-arrow-left"></i>
+                        Quay Lại Sự Kiện
+                    </a>
+                    <a asp-controller="SuKiens" asp-action="Index"
+                       class="btn btn-burgundy btn-lg">
+                        Khám Phá Sự Kiện Khác
+                    </a>
+                </div>
+
+                <!-- Help Section -->
+                <div class="confirmation-help text-center">
+                    <p class="help-text">
+                        <i class="bi bi-info-circle"></i>
+                        Vé của bạn đã được gửi đến email <strong>@Model.Email</strong>
+                    </p>
+                    <p class="help-text">
+                        Nếu không nhận được email, vui lòng kiểm tra thư mục spam hoặc liên hệ
+                        <a href="#" class="text-burgundy">hỗ trợ khách hàng</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
