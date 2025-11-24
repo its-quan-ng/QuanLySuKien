@@ -160,8 +160,17 @@
 .auth-form-container h2 {
     font-size: 32px;
     font-weight: 700;
-    color: var(--navy);
+    background: linear-gradient(135deg, var(--navy), var(--burgundy));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+}
+
+.auth-form-container > p {
+    color: #666;
     margin-bottom: 32px;
+    font-size: 15px;
 }
 
 /* Form Styles */
@@ -191,6 +200,12 @@
     outline: none;
     border-color: var(--burgundy);
     box-shadow: 0 0 0 3px rgba(139, 21, 56, 0.1);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+.form-group .form-control {
+    transition: all 0.3s ease;
 }
 
 .form-check {
@@ -230,10 +245,19 @@
 }
 
 .btn-auth-primary:hover {
-    background: var(--burgundy-light);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(139, 21, 56, 0.3);
+    background: linear-gradient(135deg, var(--burgundy-light), var(--burgundy));
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(139, 21, 56, 0.4);
     color: white;
+}
+
+.btn-auth-primary:active {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(139, 21, 56, 0.3);
+}
+
+.btn-auth-primary i {
+    margin-right: 8px;
 }
 
 .btn-auth-secondary {
@@ -254,8 +278,18 @@
 }
 
 .btn-auth-secondary:hover {
-    background: var(--burgundy);
+    background: linear-gradient(135deg, var(--burgundy), var(--burgundy-light));
     color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 21, 56, 0.2);
+}
+
+.btn-auth-secondary:active {
+    transform: translateY(0);
+}
+
+.btn-auth-secondary i {
+    margin-right: 8px;
 }
 
 /* Links */

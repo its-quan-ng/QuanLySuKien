@@ -59,14 +59,16 @@
                         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                     </div>
 
-                    <button type="submit" class="btn btn-auth-primary">Tạo Tài Khoản</button>
+                    <button type="submit" class="btn btn-auth-primary">
+                        <i class="bi bi-check-circle"></i> Tạo Tài Khoản
+                    </button>
 
                     <div class="auth-divider">
                         <span>Đã có tài khoản?</span>
                     </div>
 
                     <a asp-page="./Login" class="btn btn-auth-secondary">
-                        Đăng Nhập
+                        <i class="bi bi-box-arrow-in-right"></i> Đăng Nhập
                     </a>
                 </form>
             </div>
