@@ -1,0 +1,195 @@
+/* Related Events Carousel Styles */
+
+.related-events-carousel {
+    position: relative;
+    padding: 0 50px;
+}
+
+.related-events-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 20px 0;
+    scrollbar-width: none;
+}
+
+.related-events-container::-webkit-scrollbar {
+    display: none;
+}
+
+.related-event-card {
+    flex: 0 0 280px;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.related-event-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(27, 58, 95, 0.15);
+}
+
+.related-event-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.related-event-image {
+    position: relative;
+    width: 100%;
+    height: 160px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--beige) 0%, #e8e0d5 100%);
+}
+
+.related-event-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    background: white;
+}
+
+.related-event-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+}
+
+.related-event-placeholder i {
+    font-size: 48px;
+    color: #999;
+}
+
+.related-event-badge {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    background: var(--burgundy);
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+
+.related-event-content {
+    padding: 16px;
+}
+
+.related-event-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--beige);
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+}
+
+.related-event-date .date-month {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--burgundy);
+}
+
+.related-event-date .date-day {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+}
+
+.related-event-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.related-event-venue,
+.related-event-time,
+.related-event-price {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.related-event-venue i,
+.related-event-time i,
+.related-event-price i {
+    font-size: 13px;
+    color: var(--burgundy);
+}
+
+.related-event-price {
+    font-weight: 600;
+    color: var(--burgundy);
+    margin-top: 8px;
+}
+
+.carousel-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid var(--burgundy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.2s ease;
+}
+
+.carousel-nav-btn:hover {
+    background: var(--burgundy);
+}
+
+.carousel-nav-btn:hover i {
+    color: white;
+}
+
+.carousel-nav-btn.prev {
+    left: 0;
+}
+
+.carousel-nav-btn.next {
+    right: 0;
+}
+
+.carousel-nav-btn i {
+    font-size: 20px;
+    color: var(--burgundy);
+}
+
+@media (max-width: 767px) {
+    .related-events-carousel {
+        padding: 0 20px;
+    }
+
+    .carousel-nav-btn {
+        display: none;
+    }
+
+    .related-event-card {
+        flex: 0 0 240px;
+    }
+}

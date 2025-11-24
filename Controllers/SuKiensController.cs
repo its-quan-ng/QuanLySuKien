@@ -22,7 +22,12 @@ namespace QuanLySuKien.Controllers
         // GET: SuKiens
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.SuKiens.Include(s => s.DiaDiem);
+            var applicationDbContext = _context.SuKiens
+                .Include(s => s.DiaDiem)
+                .Include(s => s.LoaiVes)
+                .Where(s => s.TrangThai == "SapDienRa" || s.TrangThai == "DangDienRa")
+                .OrderBy(s => s.NgayToChuc)
+                .ThenBy(s => s.GioToChuc);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -36,11 +41,27 @@ namespace QuanLySuKien.Controllers
 
             var suKien = await _context.SuKiens
                 .Include(s => s.DiaDiem)
+                .Include(s => s.LoaiVes)
+                .Include(s => s.NgheSis)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (suKien == null)
             {
                 return NotFound();
             }
+
+            // Get related events (same venue or same category, excluding current event)
+            var relatedEvents = await _context.SuKiens
+                .Include(s => s.DiaDiem)
+                .Include(s => s.LoaiVes)
+                .Where(s => s.Id != id &&
+                       s.TrangThai == "SapDienRa" &&
+                       (s.DiaDiemId == suKien.DiaDiemId || s.LoaiSuKien == suKien.LoaiSuKien))
+                .OrderBy(s => s.NgayToChuc)
+                .Take(6)
+                .ToListAsync();
+
+            ViewBag.RelatedEvents = relatedEvents;
 
             return View(suKien);
         }

@@ -1,77 +1,209 @@
 ﻿@model IEnumerable<QuanLySuKien.Models.SuKien>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Sự Kiện";
 }
 
-<h1>Index</h1>
+<!-- Hero Search Section -->
+<div class="hero-search-section">
+    <div class="container">
+        <h1 class="hero-title">Khám phá thế giới sự kiện. Tìm điều bạn yêu thích!</h1>
+        <div class="search-bar-wrapper">
+            <div class="search-bar">
+                <div class="search-input-group">
+                    <i class="bi bi-search"></i>
+                    <input type="text" id="searchKeyword" placeholder="Tìm kiếm sự kiện..." class="search-input">
+                </div>
+                <div class="location-input-group">
+                    <i class="bi bi-geo-alt"></i>
+                    <select id="searchLocation" class="location-select">
+                        <option value="">Tất cả địa điểm</option>
+                        <option value="hanoi">Hà Nội</option>
+                        <option value="hcm">TP. Hồ Chí Minh</option>
+                        <option value="danang">Đà Nẵng</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TenSuKien)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LoaiSuKien)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NgayToChuc)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GioToChuc)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AnhBia)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MoTa)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TrangThai)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DiaDiem)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TenSuKien)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LoaiSuKien)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NgayToChuc)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GioToChuc)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AnhBia)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MoTa)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TrangThai)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DiaDiem.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<!-- Main Content: Filters + Event Grid -->
+<div class="container events-listing-container">
+    <div class="row">
+        <!-- Left Sidebar: Filters -->
+        <div class="col-lg-3 col-md-4 filters-sidebar">
+            <div class="filters-header">
+                <h4>Bộ Lọc</h4>
+            </div>
+
+            <!-- Location Filter -->
+            <div class="filter-section">
+                <h5 class="filter-title">Địa Điểm</h5>
+                <div class="filter-options">
+                    @{
+                        var locations = Model?.Select(s => s.DiaDiem.TenDiaDiem).Distinct().OrderBy(l => l).ToList();
+                        if (locations != null && locations.Any())
+                        {
+                            foreach (var location in locations)
+                            {
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="location" value="@location">
+                                    <span>@location</span>
+                                </label>
+                            }
+                        }
+                    }
+                </div>
+            </div>
+
+            <!-- Category Filter -->
+            <div class="filter-section">
+                <h5 class="filter-title">Thể Loại</h5>
+                <div class="filter-options">
+                    @{
+                        var categories = Model?.Where(s => !string.IsNullOrEmpty(s.LoaiSuKien))
+                            .Select(s => s.LoaiSuKien).Distinct().OrderBy(c => c).ToList();
+                        if (categories != null && categories.Any())
+                        {
+                            foreach (var category in categories)
+                            {
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="category" value="@category">
+                                    <span>@category</span>
+                                </label>
+                            }
+                        }
+                    }
+                </div>
+            </div>
+
+            <!-- Price Filter -->
+            <div class="filter-section">
+                <h5 class="filter-title">Giá Vé</h5>
+                <div class="filter-options">
+                    <label class="filter-checkbox">
+                        <input type="checkbox" name="price" value="free">
+                        <span>Miễn phí</span>
+                    </label>
+                    <label class="filter-checkbox">
+                        <input type="checkbox" name="price" value="paid">
+                        <span>Có phí</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Content: Event Grid -->
+        <div class="col-lg-9 col-md-8 events-grid-content">
+            <!-- Sort Bar -->
+            <div class="sort-bar">
+                <label>Sắp xếp theo:</label>
+                <select id="sortSelect" class="sort-select">
+                    <option value="relevance">Liên quan</option>
+                    <option value="date">Ngày diễn ra</option>
+                    <option value="price-low">Giá thấp đến cao</option>
+                    <option value="price-high">Giá cao đến thấp</option>
+                </select>
+            </div>
+
+            <!-- Event Cards Grid -->
+            <div class="event-cards-grid">
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var item in Model)
+                    {
+                        <div class="event-card" data-loai="@item.LoaiSuKien">
+                            <!-- Card Overlay Link -->
+                            <a asp-controller="SuKiens" asp-action="Details" asp-route-id="@item.Id" class="event-card-overlay"></a>
+
+                            <div class="event-card-image">
+                                @if (!string.IsNullOrEmpty(item.AnhBia))
+                                {
+                                    <img src="@item.AnhBia" alt="@item.TenSuKien">
+                                }
+                                else
+                                {
+                                    <div class="event-placeholder-image">
+                                        <i class="bi bi-calendar-event"></i>
+                                    </div>
+                                }
+
+                                <!-- Date Badge -->
+                                <div class="event-date-badge">
+                                    <div class="date-month">@item.NgayToChuc.ToString("MMM").ToUpper()</div>
+                                    <div class="date-day">@item.NgayToChuc.Day</div>
+                                </div>
+
+                                <!-- Favorite Icon -->
+                                <button class="event-favorite-btn" data-event-id="@item.Id">
+                                    <i class="bi bi-star"></i>
+                                </button>
+
+                                <!-- Category Badge -->
+                                @if (!string.IsNullOrEmpty(item.LoaiSuKien))
+                                {
+                                    <div class="event-category-badge">@item.LoaiSuKien</div>
+                                }
+                            </div>
+
+                            <div class="event-card-content">
+                                <h3 class="event-card-title">
+                                    <a asp-action="Details" asp-route-id="@item.Id">@item.TenSuKien</a>
+                                </h3>
+
+                                <div class="event-card-venue">
+                                    <i class="bi bi-geo-alt"></i>
+                                    <span>@item.DiaDiem.TenDiaDiem</span>
+                                </div>
+
+                                <div class="event-card-time">
+                                    <i class="bi bi-clock"></i>
+                                    <span>@item.GioToChuc.ToString("HH:mm")</span>
+                                </div>
+
+                                <div class="event-card-footer">
+                                    <div class="event-card-price">
+                                        @if (item.LoaiVes != null && item.LoaiVes.Any())
+                                        {
+                                            var minPrice = item.LoaiVes.Min(v => v.GiaVe);
+                                            if (minPrice == 0)
+                                            {
+                                                <i class="bi bi-ticket-perforated"></i>
+                                                <span>Miễn phí</span>
+                                            }
+                                            else
+                                            {
+                                                <i class="bi bi-ticket-perforated"></i>
+                                                <span>@minPrice.ToString("N0") VNĐ</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-ticket-perforated"></i>
+                                            <span>Liên hệ</span>
+                                        }
+                                    </div>
+
+                                    <div class="event-card-interested">
+                                        <i class="bi bi-star-fill"></i>
+                                        <span>@(new Random().Next(10, 200)) quan tâm</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-12">
+                        <div class="alert alert-info text-center">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Không tìm thấy sự kiện nào phù hợp. Vui lòng thử lại với bộ lọc khác!
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,66 +1,331 @@
 ﻿@model QuanLySuKien.Models.SuKien
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.TenSuKien;
 }
 
-<h1>Details</h1>
+<div class="event-detail-page">
+    <div class="container">
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <!-- Hero Image -->
+                <div class="event-detail-hero">
+                    @if (!string.IsNullOrEmpty(Model.AnhBia))
+                    {
+                        <img src="@Model.AnhBia" alt="@Model.TenSuKien" class="event-detail-image">
+                    }
+                    else
+                    {
+                        <div class="event-detail-placeholder">
+                            <i class="bi bi-image"></i>
+                        </div>
+                    }
+                </div>
 
-<div>
-    <h4>SuKien</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TenSuKien)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TenSuKien)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LoaiSuKien)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LoaiSuKien)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NgayToChuc)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NgayToChuc)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GioToChuc)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GioToChuc)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AnhBia)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AnhBia)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MoTa)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MoTa)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TrangThai)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TrangThai)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DiaDiem)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DiaDiem.Id)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+                <!-- Event Header -->
+                <div class="event-detail-header">
+                    <h1 class="event-detail-title">@Model.TenSuKien</h1>
+                    <div class="event-detail-actions">
+                        <button class="event-action-btn favorite-btn" data-event-id="@Model.Id">
+                            <i class="bi bi-star"></i>
+                        </button>
+                        <button class="event-action-btn share-btn">
+                            <i class="bi bi-share"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Date and Time Section -->
+                <div class="event-detail-section">
+                    <h3 class="section-title">Ngày và Giờ</h3>
+                    <div class="date-time-info">
+                        <div class="info-item">
+                            <i class="bi bi-calendar3"></i>
+                            <span>@Model.NgayToChuc.ToString("dddd, dd MMMM yyyy")</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="bi bi-clock"></i>
+                            <span>@Model.GioToChuc.ToString("HH:mm")</span>
+                        </div>
+                        <a href="#" class="add-to-calendar">+ Thêm vào lịch</a>
+                    </div>
+                </div>
+
+                <!-- Location Section -->
+                <div class="event-detail-section">
+                    <h3 class="section-title">Địa Điểm</h3>
+                    <div class="location-info">
+                        <div class="info-item">
+                            <i class="bi bi-geo-alt"></i>
+                            <span>@Model.DiaDiem.TenDiaDiem</span>
+                        </div>
+                        @if (!string.IsNullOrEmpty(Model.DiaDiem.DiaChi))
+                        {
+                            <p class="location-address">@Model.DiaDiem.DiaChi</p>
+                        }
+                    </div>
+
+                    <!-- Interactive Map -->
+                    <div class="event-map">
+                        <div id="eventMap" class="map-container"
+                             data-venue="@Model.DiaDiem.TenDiaDiem"
+                             data-address="@Model.DiaDiem.DiaChi">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ticket Information Section -->
+                <div class="event-detail-section">
+                    <h3 class="section-title">Thông Tin Vé</h3>
+                    <div class="ticket-types-list">
+                        @if (Model.LoaiVes != null && Model.LoaiVes.Any())
+                        {
+                            @foreach (var loaiVe in Model.LoaiVes)
+                            {
+                                <div class="ticket-type-item">
+                                    <div class="ticket-type-info">
+                                        <i class="bi bi-ticket-perforated"></i>
+                                        <span class="ticket-type-name">@loaiVe.TenLoai</span>
+                                    </div>
+                                    <div class="ticket-type-price">
+                                        @if (loaiVe.GiaVe == 0)
+                                        {
+                                            <span class="price">Miễn phí</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="price">@loaiVe.GiaVe.ToString("N0") VNĐ</span>
+                                        }
+                                    </div>
+                                    <div class="ticket-availability">
+                                        <span class="stock">Còn @loaiVe.SoLuongConLai/@loaiVe.TongSoLuong vé</span>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-muted">Thông tin vé sẽ được cập nhật sớm.</p>
+                        }
+                    </div>
+                </div>
+
+                <!-- Hosted By Section -->
+                <div class="event-detail-section">
+                    <h3 class="section-title">Đơn Vị Tổ Chức</h3>
+                    <div class="host-info">
+                        <div class="host-avatar">
+                            <i class="bi bi-building"></i>
+                        </div>
+                        <div class="host-details">
+                            <h4 class="host-name">Ban Tổ Chức Sự Kiện</h4>
+                            <div class="host-actions">
+                                <button class="btn btn-outline-burgundy btn-sm">Liên Hệ</button>
+                                <button class="btn btn-outline-burgundy btn-sm">+ Theo Dõi</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Description Section -->
+                <div class="event-detail-section">
+                    <h3 class="section-title">Mô Tả Sự Kiện</h3>
+                    <div class="event-description">
+                        @if (!string.IsNullOrEmpty(Model.MoTa))
+                        {
+                            <p>@Model.MoTa</p>
+                        }
+                        else
+                        {
+                            <p class="text-muted">Chưa có mô tả chi tiết cho sự kiện này.</p>
+                        }
+                    </div>
+                </div>
+
+                <!-- Tags Section -->
+                @if (!string.IsNullOrEmpty(Model.LoaiSuKien))
+                {
+                    <div class="event-detail-section">
+                        <h3 class="section-title">Thẻ Tag</h3>
+                        <div class="event-tags">
+                            <span class="event-tag">@Model.LoaiSuKien</span>
+                            <span class="event-tag">Sự kiện</span>
+                            <span class="event-tag">@Model.DiaDiem.TenDiaDiem.Split(',').Last().Trim()</span>
+                        </div>
+                    </div>
+                }
+
+                <!-- Other Events Section -->
+                @if (ViewBag.RelatedEvents != null && ((List<QuanLySuKien.Models.SuKien>)ViewBag.RelatedEvents).Any())
+                {
+                    <div class="event-detail-section">
+                        <h3 class="section-title">Sự Kiện Khác Bạn Có Thể Thích</h3>
+                        <div class="related-events-carousel">
+                            <button class="carousel-nav-btn prev" onclick="scrollRelatedEvents('left')">
+                                <i class="bi bi-chevron-left"></i>
+                            </button>
+                            <div class="related-events-container" id="relatedEventsContainer">
+                                @foreach (var relatedEvent in (List<QuanLySuKien.Models.SuKien>)ViewBag.RelatedEvents)
+                                {
+                                    <div class="related-event-card">
+                                        <a asp-controller="SuKiens" asp-action="Details" asp-route-id="@relatedEvent.Id" class="related-event-link">
+                                            <div class="related-event-image">
+                                                @if (!string.IsNullOrEmpty(relatedEvent.AnhBia))
+                                                {
+                                                    <img src="@relatedEvent.AnhBia" alt="@relatedEvent.TenSuKien">
+                                                }
+                                                else
+                                                {
+                                                    <div class="related-event-placeholder">
+                                                        <i class="bi bi-calendar-event"></i>
+                                                    </div>
+                                                }
+                                                @if (!string.IsNullOrEmpty(relatedEvent.LoaiSuKien))
+                                                {
+                                                    <span class="related-event-badge">@relatedEvent.LoaiSuKien</span>
+                                                }
+                                            </div>
+                                            <div class="related-event-content">
+                                                <div class="related-event-date">
+                                                    <span class="date-month">@relatedEvent.NgayToChuc.ToString("MMM").ToUpper()</span>
+                                                    <span class="date-day">@relatedEvent.NgayToChuc.Day</span>
+                                                </div>
+                                                <h4 class="related-event-title">@relatedEvent.TenSuKien</h4>
+                                                <p class="related-event-venue">
+                                                    <i class="bi bi-geo-alt"></i>
+                                                    @relatedEvent.DiaDiem.TenDiaDiem
+                                                </p>
+                                                <p class="related-event-time">
+                                                    <i class="bi bi-clock"></i>
+                                                    @relatedEvent.GioToChuc.ToString("HH:mm")
+                                                </p>
+                                                @if (relatedEvent.LoaiVes != null && relatedEvent.LoaiVes.Any())
+                                                {
+                                                    var minPrice = relatedEvent.LoaiVes.Min(v => v.GiaVe);
+                                                    <p class="related-event-price">
+                                                        <i class="bi bi-ticket-perforated"></i>
+                                                        @if (minPrice == 0)
+                                                        {
+                                                            <span>Miễn phí</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>@minPrice.ToString("N0") VNĐ</span>
+                                                        }
+                                                    </p>
+                                                }
+                                            </div>
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+                            <button class="carousel-nav-btn next" onclick="scrollRelatedEvents('right')">
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="col-lg-4">
+                <div class="event-sidebar sticky-sidebar">
+                    <!-- Buy Tickets CTA -->
+                    <div class="sidebar-cta">
+                        @if (Model.LoaiVes != null && Model.LoaiVes.Any())
+                        {
+                            var minPrice = Model.LoaiVes.Min(v => v.GiaVe);
+                            var hasAvailableTickets = Model.LoaiVes.Any(v => v.SoLuongConLai > 0);
+
+                            @if (hasAvailableTickets)
+                            {
+                                <div class="price-display">
+                                    @if (minPrice == 0)
+                                    {
+                                        <span class="price-label">Miễn phí</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="price-label">Từ</span>
+                                        <span class="price-value">@minPrice.ToString("N0") VNĐ</span>
+                                    }
+                                </div>
+                                <button class="btn btn-buy-tickets">
+                                    <i class="bi bi-ticket-perforated-fill"></i>
+                                    Mua Vé Ngay
+                                </button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-buy-tickets" disabled>
+                                    Đã Hết Vé
+                                </button>
+                            }
+                        }
+                        else
+                        {
+                            <button class="btn btn-buy-tickets">
+                                Liên Hệ Để Đặt Vé
+                            </button>
+                        }
+                    </div>
+
+                    <!-- Event Info Summary -->
+                    <div class="sidebar-info">
+                        <div class="info-row">
+                            <i class="bi bi-calendar-event"></i>
+                            <div>
+                                <strong>Ngày</strong>
+                                <p>@Model.NgayToChuc.ToString("dd/MM/yyyy")</p>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <i class="bi bi-clock"></i>
+                            <div>
+                                <strong>Giờ</strong>
+                                <p>@Model.GioToChuc.ToString("HH:mm")</p>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <i class="bi bi-geo-alt"></i>
+                            <div>
+                                <strong>Địa điểm</strong>
+                                <p>@Model.DiaDiem.TenDiaDiem</p>
+                            </div>
+                        </div>
+                        @if (!string.IsNullOrEmpty(Model.LoaiSuKien))
+                        {
+                            <div class="info-row">
+                                <i class="bi bi-tag"></i>
+                                <div>
+                                    <strong>Thể loại</strong>
+                                    <p>@Model.LoaiSuKien</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Share Section -->
+                    <div class="sidebar-share">
+                        <h4>Chia Sẻ Sự Kiện</h4>
+                        <div class="share-buttons">
+                            <button class="share-btn facebook" title="Facebook">
+                                <i class="bi bi-facebook"></i>
+                            </button>
+                            <button class="share-btn twitter" title="Twitter">
+                                <i class="bi bi-twitter"></i>
+                            </button>
+                            <button class="share-btn linkedin" title="LinkedIn">
+                                <i class="bi bi-linkedin"></i>
+                            </button>
+                            <button class="share-btn copy" title="Copy Link">
+                                <i class="bi bi-link-45deg"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
