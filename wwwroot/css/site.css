@@ -24,7 +24,7 @@ html {
 }
 
 body {
-    margin-bottom: 60px;
+    margin-bottom: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -82,6 +82,41 @@ body {
     width: 80%;
 }
 
+/* Navbar Search */
+.navbar-search-form {
+    margin: 0 20px;
+}
+
+.navbar-search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-search-wrapper i {
+    position: absolute;
+    left: 12px;
+    color: #666;
+    font-size: 16px;
+}
+
+.navbar-search-input {
+    width: 220px;
+    height: 38px;
+    padding: 0 16px 0 36px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.navbar-search-input:focus {
+    outline: none;
+    border-color: var(--burgundy);
+    width: 280px;
+    box-shadow: 0 2px 8px rgba(139, 21, 56, 0.15);
+}
+
 /* Focus States */
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--burgundy);
@@ -128,20 +163,103 @@ body {
 }
 
 /* Footer */
-.footer {
-    padding: 1.5rem 0;
-    background-color: var(--beige);
-    border-top: 3px solid var(--burgundy) !important;
+.footer-main {
+    background: var(--navy);
+    color: white;
+    padding: 60px 0 0;
+    border-top: 4px solid var(--burgundy);
 }
 
-.footer a {
-    color: var(--navy);
+.footer-col {
+    margin-bottom: 30px;
+}
+
+.footer-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 12px;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
-    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.footer a:hover {
-    color: var(--burgundy);
+.footer-links a:hover {
+    color: white;
+    padding-left: 8px;
+}
+
+.footer-links a i {
+    font-size: 16px;
+}
+
+.app-download-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.app-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.app-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+}
+
+.app-btn i {
+    font-size: 28px;
+}
+
+.app-btn small {
+    display: block;
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+.app-btn strong {
+    display: block;
+    font-size: 14px;
+}
+
+.footer-bottom {
+    margin-top: 40px;
+    padding: 24px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.footer-bottom p {
+    margin: 0;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
 }
 
 /* ============================================

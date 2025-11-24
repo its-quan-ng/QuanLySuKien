@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="~/css/confirmation.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/artists.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/venues.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/my-orders.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/QuanLySuKien.styles.css" asp-append-version="true" />
 </head>
 <body>
@@ -42,6 +43,23 @@
                             <a class="nav-link" asp-area="" asp-controller="DiaDiems" asp-action="Index">Địa Điểm</a>
                         </li>
                     </ul>
+
+                    <!-- Navbar Search -->
+                    <form class="navbar-search-form" asp-controller="SuKiens" asp-action="Index" method="get">
+                        <div class="navbar-search-wrapper">
+                            <i class="bi bi-search"></i>
+                            <input type="text" name="search" class="navbar-search-input" placeholder="Tìm sự kiện...">
+                        </div>
+                    </form>
+
+                    <ul class="navbar-nav ms-3">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="DonHangs" asp-action="MyOrders">
+                                <i class="bi bi-ticket-perforated"></i> Vé Của Tôi
+                            </a>
+                        </li>
+                    </ul>
+
                     <partial name="_LoginPartial" />
                 </div>
             </div>
@@ -53,9 +71,82 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer-main">
         <div class="container">
-            &copy; 2025 - EventHub - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="row">
+                <!-- Company Info -->
+                <div class="col-md footer-col">
+                    <h5 class="footer-title">Thông Tin</h5>
+                    <ul class="footer-links">
+                        <li><a asp-controller="Home" asp-action="Index">Về Chúng Tôi</a></li>
+                        <li><a href="#">Liên Hệ</a></li>
+                        <li><a href="#">Tuyển Dụng</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Điều Khoản Dịch Vụ</a></li>
+                        <li><a asp-controller="Home" asp-action="Privacy">Chính Sách Bảo Mật</a></li>
+                    </ul>
+                </div>
+
+                <!-- Help -->
+                <div class="col-md footer-col">
+                    <h5 class="footer-title">Hỗ Trợ</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">Hỗ Trợ Khách Hàng</a></li>
+                        <li><a asp-controller="SuKiens" asp-action="Index">Danh Sách Sự Kiện</a></li>
+                        <li><a href="#">Hướng Dẫn Đặt Vé</a></li>
+                        <li><a href="#">Chính Sách Hoàn Tiền</a></li>
+                    </ul>
+                </div>
+
+                <!-- Categories -->
+                <div class="col-md footer-col">
+                    <h5 class="footer-title">Thể Loại</h5>
+                    <ul class="footer-links">
+                        <li><a asp-controller="SuKiens" asp-action="Index">Hòa Nhạc & Biểu Diễn</a></li>
+                        <li><a asp-controller="SuKiens" asp-action="Index">Lễ Hội & Sự Kiện</a></li>
+                        <li><a asp-controller="SuKiens" asp-action="Index">Kinh Doanh & Networking</a></li>
+                        <li><a asp-controller="SuKiens" asp-action="Index">Ẩm Thực & Đồ Uống</a></li>
+                        <li><a asp-controller="SuKiens" asp-action="Index">Nghệ Thuật & Văn Hóa</a></li>
+                        <li><a asp-controller="SuKiens" asp-action="Index">Thể Thao & Ngoài Trời</a></li>
+                    </ul>
+                </div>
+
+                <!-- Follow Us -->
+                <div class="col-md footer-col">
+                    <h5 class="footer-title">Theo Dõi</h5>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="bi bi-facebook"></i> Facebook</a></li>
+                        <li><a href="#"><i class="bi bi-instagram"></i> Instagram</a></li>
+                        <li><a href="#"><i class="bi bi-twitter"></i> Twitter</a></li>
+                        <li><a href="#"><i class="bi bi-youtube"></i> Youtube</a></li>
+                    </ul>
+                </div>
+
+                <!-- Download App -->
+                <div class="col-md footer-col">
+                    <h5 class="footer-title">Tải Ứng Dụng</h5>
+                    <div class="app-download-buttons">
+                        <a href="#" class="app-btn">
+                            <i class="bi bi-google-play"></i>
+                            <div>
+                                <small>Tải về</small>
+                                <strong>Google Play</strong>
+                            </div>
+                        </a>
+                        <a href="#" class="app-btn">
+                            <i class="bi bi-apple"></i>
+                            <div>
+                                <small>Tải về</small>
+                                <strong>App Store</strong>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 EventHub. All rights reserved.</p>
+            </div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
