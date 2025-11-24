@@ -13,11 +13,54 @@
     </div>
 </div>
 
+<!-- Explore Categories Section -->
+<div class="container mb-5">
+    <h2 class="text-center fw-bold text-navy mb-4">Khám Phá Theo Thể Loại</h2>
+    <div class="categories-scroll">
+        <a asp-controller="SuKiens" asp-action="Index" class="category-circle">
+            <div class="category-icon">
+                <i class="bi bi-music-note-beamed"></i>
+            </div>
+            <span>Âm Nhạc</span>
+        </a>
+        <a asp-controller="SuKiens" asp-action="Index" class="category-circle">
+            <div class="category-icon">
+                <i class="bi bi-palette"></i>
+            </div>
+            <span>Nghệ Thuật</span>
+        </a>
+        <a asp-controller="SuKiens" asp-action="Index" class="category-circle">
+            <div class="category-icon">
+                <i class="bi bi-balloon"></i>
+            </div>
+            <span>Lễ Hội</span>
+        </a>
+        <a asp-controller="SuKiens" asp-action="Index" class="category-circle">
+            <div class="category-icon">
+                <i class="bi bi-briefcase"></i>
+            </div>
+            <span>Kinh Doanh</span>
+        </a>
+        <a asp-controller="SuKiens" asp-action="Index" class="category-circle">
+            <div class="category-icon">
+                <i class="bi bi-cup-hot"></i>
+            </div>
+            <span>Ẩm Thực</span>
+        </a>
+        <a asp-controller="SuKiens" asp-action="Index" class="category-circle">
+            <div class="category-icon">
+                <i class="bi bi-trophy"></i>
+            </div>
+            <span>Thể Thao</span>
+        </a>
+    </div>
+</div>
+
 <!-- Upcoming Events Section -->
 <div class="container mb-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold text-navy">Sự Kiện Sắp Diễn Ra</h2>
-        <a asp-controller="SuKiens" asp-action="Index" class="btn btn-outline-burgundy">Xem Thêm →</a>
+        <h2 class="fw-bold text-navy">Sự Kiện Nổi Bật</h2>
+        <a asp-controller="SuKiens" asp-action="Index" class="btn btn-outline-burgundy">Xem Tất Cả →</a>
     </div>
 
     @if (Model != null && Model.Any())
@@ -107,6 +150,61 @@
 </div>
 
 <style>
+    /* Category Circles */
+    .categories-scroll {
+        display: flex;
+        gap: 24px;
+        overflow-x: auto;
+        padding: 20px 0;
+        scrollbar-width: none;
+        justify-content: center;
+    }
+
+    .categories-scroll::-webkit-scrollbar {
+        display: none;
+    }
+
+    .category-circle {
+        flex: 0 0 auto;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .category-icon {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--burgundy) 0%, var(--navy) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(139, 21, 56, 0.2);
+    }
+
+    .category-icon i {
+        font-size: 36px;
+        color: white;
+    }
+
+    .category-circle span {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--navy);
+    }
+
+    .category-circle:hover .category-icon {
+        transform: translateY(-8px) scale(1.1);
+        box-shadow: 0 8px 20px rgba(139, 21, 56, 0.3);
+    }
+
+    .category-circle:hover span {
+        color: var(--burgundy);
+    }
+
     /* Color Palette - Burgundy Red & Navy Blue with White & Beige */
     :root {
         --burgundy: #8B1538;
