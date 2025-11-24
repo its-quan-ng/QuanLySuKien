@@ -1,53 +1,81 @@
 ﻿@model IEnumerable<QuanLySuKien.Models.NgheSi>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Nghệ Sĩ";
 }
 
-<h1>Index</h1>
+<!-- Hero Section -->
+<div class="hero-search-section">
+    <div class="container">
+        <h1 class="hero-title">Khám Phá Nghệ Sĩ Yêu Thích</h1>
+        <p class="hero-subtitle">Theo dõi nghệ sĩ để không bỏ lỡ sự kiện nào</p>
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TenNgheSi)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TheLoai)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TieuSu)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AnhDaiDien)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TenNgheSi)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TheLoai)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TieuSu)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AnhDaiDien)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<!-- Artists Grid -->
+<div class="container artists-container">
+    <!-- Artists Grid -->
+    <div class="artists-grid">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var artist in Model)
+            {
+                <div class="artist-card">
+                    <a asp-controller="NgheSis" asp-action="Details" asp-route-id="@artist.Id" class="artist-card-overlay"></a>
+
+                    <div class="artist-card-image">
+                        @if (!string.IsNullOrEmpty(artist.AnhDaiDien))
+                        {
+                            <img src="@artist.AnhDaiDien" alt="@artist.TenNgheSi">
+                        }
+                        else
+                        {
+                            <div class="artist-placeholder-image">
+                                <i class="bi bi-person-circle"></i>
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(artist.TheLoai))
+                        {
+                            <div class="artist-genre-badge">@artist.TheLoai.Split('/').First()</div>
+                        }
+                    </div>
+
+                    <div class="artist-card-content">
+                        <h3 class="artist-card-name">@artist.TenNgheSi</h3>
+                        @if (!string.IsNullOrEmpty(artist.TheLoai))
+                        {
+                            <p class="artist-card-genre">
+                                <i class="bi bi-music-note-beamed"></i>
+                                @artist.TheLoai
+                            </p>
+                        }
+                        @if (!string.IsNullOrEmpty(artist.TieuSu) && artist.TieuSu.Length > 100)
+                        {
+                            <p class="artist-card-bio">@artist.TieuSu.Substring(0, 100)...</p>
+                        }
+                        else if (!string.IsNullOrEmpty(artist.TieuSu))
+                        {
+                            <p class="artist-card-bio">@artist.TieuSu</p>
+                        }
+
+                        <div class="artist-card-footer">
+                            <button class="btn-follow" data-artist-id="@artist.Id">
+                                <i class="bi bi-plus-circle"></i>
+                                Theo Dõi
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Chưa có nghệ sĩ nào trong hệ thống.
+                </div>
+            </div>
+        }
+    </div>
+</div>

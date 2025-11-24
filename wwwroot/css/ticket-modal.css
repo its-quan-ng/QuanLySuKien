@@ -241,24 +241,27 @@
 
 .form-check {
     padding-left: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
 }
 
 .form-check-input {
     width: 20px;
     height: 20px;
-    margin-right: 10px;
     cursor: pointer;
     accent-color: var(--burgundy);
-    float: left;
-    margin-top: 2px;
+    margin: 0;
+    flex-shrink: 0;
+    margin-top: 3px;
 }
 
 .form-check-label {
     font-size: 13px;
     color: #666;
-    display: block;
-    padding-left: 30px;
     cursor: pointer;
+    flex: 1;
+    line-height: 1.5;
 }
 
 /* ============================================

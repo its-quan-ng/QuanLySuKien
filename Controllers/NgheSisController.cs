@@ -34,7 +34,12 @@ namespace QuanLySuKien.Controllers
             }
 
             var ngheSi = await _context.NgheSis
+                .Include(n => n.SuKiens)
+                    .ThenInclude(s => s.DiaDiem)
+                .Include(n => n.SuKiens)
+                    .ThenInclude(s => s.LoaiVes)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (ngheSi == null)
             {
                 return NotFound();

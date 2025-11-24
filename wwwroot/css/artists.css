@@ -1,0 +1,341 @@
+/* Artists Page Styles */
+
+.hero-subtitle {
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    margin-top: 12px;
+    opacity: 0.95;
+}
+
+.artists-container {
+    padding: 40px 0 60px;
+}
+
+.artists-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+.artist-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.artist-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(27, 58, 95, 0.15);
+}
+
+.artist-card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+.artist-card-image {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--beige) 0%, #e8e0d5 100%);
+}
+
+.artist-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+}
+
+.artist-placeholder-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+}
+
+.artist-placeholder-image i {
+    font-size: 80px;
+    color: #999;
+}
+
+.artist-genre-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--burgundy);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.artist-card-content {
+    padding: 20px;
+    text-align: center;
+}
+
+.artist-card-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 8px;
+}
+
+.artist-card-genre {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.artist-card-genre i {
+    color: var(--burgundy);
+}
+
+.artist-card-bio {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 16px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.artist-card-footer {
+    margin-top: 16px;
+}
+
+.btn-follow {
+    background: white;
+    border: 2px solid var(--burgundy);
+    color: var(--burgundy);
+    padding: 10px 24px;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+    z-index: 2;
+}
+
+.btn-follow:hover {
+    background: var(--burgundy);
+    color: white;
+}
+
+.btn-follow.following {
+    background: var(--burgundy);
+    color: white;
+}
+
+.btn-follow.following i {
+    transform: rotate(45deg);
+}
+
+@media (max-width: 1199px) {
+    .artists-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 991px) {
+    .artists-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 767px) {
+    .artists-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .artist-card-image {
+        height: 320px;
+    }
+}
+
+/* Artist Detail Page */
+.artist-detail-page {
+    padding: 40px 0 60px;
+}
+
+.artist-hero {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 60px;
+    align-items: center;
+}
+
+.artist-hero-image {
+    flex: 0 0 300px;
+    height: 300px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.artist-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+}
+
+.artist-hero-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--beige) 0%, #e8e0d5 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.artist-hero-placeholder i {
+    font-size: 100px;
+    color: #999;
+}
+
+.artist-hero-content {
+    flex: 1;
+}
+
+.artist-name {
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 16px;
+}
+
+.artist-genres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.genre-tag {
+    display: inline-block;
+    padding: 8px 16px;
+    background: var(--beige);
+    color: var(--burgundy);
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 20px;
+    border: 2px solid var(--burgundy);
+}
+
+.btn-follow-large {
+    background: var(--burgundy);
+    color: white;
+    border: none;
+    padding: 14px 36px;
+    border-radius: 28px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-follow-large:hover {
+    background: var(--burgundy-light);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 21, 56, 0.4);
+}
+
+.btn-follow-large.following {
+    background: var(--navy);
+}
+
+.btn-follow-large.following i {
+    transform: rotate(45deg);
+}
+
+.artist-bio-section {
+    margin-bottom: 60px;
+}
+
+.artist-bio-section .section-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 20px;
+}
+
+.artist-bio-content {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #333;
+}
+
+.artist-events-section .section-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 24px;
+}
+
+.artist-events-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+@media (max-width: 991px) {
+    .artist-hero {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .artist-hero-image {
+        flex: 0 0 250px;
+        height: 250px;
+    }
+
+    .artist-name {
+        font-size: 32px;
+    }
+
+    .artist-genres {
+        justify-content: center;
+    }
+
+    .artist-events-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 767px) {
+    .artist-events-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .artist-hero-image {
+        width: 100%;
+    }
+}
