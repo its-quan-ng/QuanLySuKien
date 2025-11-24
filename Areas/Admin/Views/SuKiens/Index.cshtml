@@ -1,77 +1,78 @@
 ﻿@model IEnumerable<QuanLySuKien.Models.SuKien>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Quản Lý Sự Kiện";
 }
 
-<h1>Index</h1>
+<div class="admin-page-header">
+    <h1><i class="bi bi-calendar-event"></i> Quản Lý Sự Kiện</h1>
+    <a asp-action="Create" class="btn btn-burgundy">
+        <i class="bi bi-plus-circle"></i>
+        Thêm Sự Kiện Mới
+    </a>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TenSuKien)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LoaiSuKien)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NgayToChuc)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GioToChuc)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AnhBia)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MoTa)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TrangThai)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DiaDiem)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+<div class="admin-card">
+    <table class="table admin-table">
+        <thead>
+            <tr>
+                <th>Tên Sự Kiện</th>
+                <th>Loại</th>
+                <th>Ngày</th>
+                <th>Địa Điểm</th>
+                <th>Trạng Thái</th>
+                <th class="text-end">Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody>
 @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TenSuKien)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LoaiSuKien)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NgayToChuc)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GioToChuc)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AnhBia)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MoTa)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TrangThai)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DiaDiem.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    <strong>@item.TenSuKien</strong>
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.LoaiSuKien))
+                    {
+                        <span class="badge bg-info">@item.LoaiSuKien</span>
+                    }
+                </td>
+                <td>
+                    @item.NgayToChuc.ToString("dd/MM/yyyy")<br/>
+                    <small class="text-muted">@item.GioToChuc.ToString("HH:mm")</small>
+                </td>
+                <td>@item.DiaDiem?.TenDiaDiem</td>
+                <td>
+                    @switch(item.TrangThai)
+                    {
+                        case "SapDienRa":
+                            <span class="badge-status badge-active">Sắp Diễn Ra</span>
+                            break;
+                        case "DangDienRa":
+                            <span class="badge-status badge-confirmed">Đang Diễn Ra</span>
+                            break;
+                        case "KetThuc":
+                            <span class="badge-status badge-pending">Kết Thúc</span>
+                            break;
+                        case "HuyBo":
+                            <span class="badge-status badge-cancelled">Hủy Bỏ</span>
+                            break;
+                    }
+                </td>
+                <td class="text-end">
+                    <div class="admin-actions">
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn-admin-action btn-admin-view">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn-admin-action btn-admin-edit">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn-admin-action btn-admin-delete">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
 }
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>

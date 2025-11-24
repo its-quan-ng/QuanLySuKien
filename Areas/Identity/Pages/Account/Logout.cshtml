@@ -1,0 +1,22 @@
+@page
+@model QuanLySuKien.Areas.Identity.Pages.Account.LogoutModel
+
+@{
+    ViewData["Title"] = "Đăng Xuất";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Logging out...</title>
+</head>
+<body>
+    <form method="post" asp-page-handler="Logout">
+        <button type="submit" style="display:none;">Logout</button>
+    </form>
+    <script>
+        document.querySelector('form').submit();
+    </script>
+</body>
+</html>
