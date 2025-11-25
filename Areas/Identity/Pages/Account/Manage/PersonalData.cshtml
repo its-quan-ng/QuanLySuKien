@@ -1,0 +1,174 @@
+@page
+@model PersonalDataModel
+@{
+    ViewData["Title"] = "Dữ Liệu Cá Nhân";
+    ViewData["ActivePage"] = "PersonalData";
+}
+
+<div class="manage-container">
+    <!-- Sidebar Navigation -->
+    <div class="manage-sidebar">
+        <div class="manage-sidebar-header">
+            <a href="/" class="brand-link">
+                <i class="bi bi-arrow-left"></i>
+                <span>@User.Identity.Name</span>
+            </a>
+        </div>
+
+        <nav class="manage-nav">
+            <a href="/Identity/Account/Manage" class="manage-nav-item">
+                <i class="bi bi-person"></i>
+                <span>Hồ Sơ</span>
+            </a>
+            <a href="/Identity/Account/Manage/Email" class="manage-nav-item">
+                <i class="bi bi-envelope"></i>
+                <span>Email</span>
+            </a>
+            <a href="/Identity/Account/Manage/ChangePassword" class="manage-nav-item">
+                <i class="bi bi-key"></i>
+                <span>Mật Khẩu</span>
+            </a>
+            <a href="/Identity/Account/Manage/TwoFactorAuthentication" class="manage-nav-item">
+                <i class="bi bi-shield-check"></i>
+                <span>Xác Thực Hai Yếu Tố</span>
+            </a>
+            <a href="/Identity/Account/Manage/PersonalData" class="manage-nav-item active">
+                <i class="bi bi-file-person"></i>
+                <span>Dữ Liệu Cá Nhân</span>
+            </a>
+        </nav>
+
+        <div class="manage-sidebar-footer">
+            <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="/" method="post" class="logout-form">
+                <button type="submit" class="btn-logout">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Đăng Xuất</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="manage-content">
+        <div class="manage-header">
+            <div>
+                <h1>Dữ Liệu Cá Nhân</h1>
+                <p class="manage-subtitle">Quản lý và bảo vệ dữ liệu của bạn</p>
+            </div>
+        </div>
+
+        <div class="manage-card">
+            <div class="manage-card-header">
+                <h2>Quyền Riêng Tư</h2>
+                <p>Thông tin về dữ liệu của bạn</p>
+            </div>
+
+            <div class="info-section">
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-download"></i>
+                    </div>
+                    <div class="info-content">
+                        <h3>Tải Xuống Dữ Liệu</h3>
+                        <p>Bạn có thể tải xuống tất cả dữ liệu cá nhân mà chúng tôi lưu trữ về bạn</p>
+                        <a href="/Identity/Account/Manage/DownloadPersonalData" class="btn btn-secondary" style="margin-top: 12px;">
+                            <i class="bi bi-download"></i>
+                            Tải Xuống Dữ Liệu
+                        </a>
+                    </div>
+                </div>
+
+                <div class="info-item danger-zone">
+                    <div class="info-icon">
+                        <i class="bi bi-trash"></i>
+                    </div>
+                    <div class="info-content">
+                        <h3>Xóa Tài Khoản</h3>
+                        <p>Xóa vĩnh viễn tài khoản và tất cả dữ liệu liên quan. Hành động này không thể hoàn tác.</p>
+                        <a href="/Identity/Account/Manage/DeletePersonalData" class="btn btn-danger" style="margin-top: 12px;">
+                            <i class="bi bi-trash"></i>
+                            Xóa Tài Khoản
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Privacy Info Card -->
+        <div class="manage-card">
+            <div class="manage-card-header">
+                <h2>Chính Sách Bảo Mật</h2>
+                <p>Cách chúng tôi bảo vệ dữ liệu của bạn</p>
+            </div>
+
+            <div class="tips-list">
+                <div class="tip-item">
+                    <div class="tip-icon">
+                        <i class="bi bi-lock-fill"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h3>Mã Hóa Dữ Liệu</h3>
+                        <p>Tất cả dữ liệu nhạy cảm được mã hóa khi lưu trữ và truyền tải</p>
+                    </div>
+                </div>
+
+                <div class="tip-item">
+                    <div class="tip-icon">
+                        <i class="bi bi-eye-slash-fill" style="color: #3b82f6;"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h3>Không Chia Sẻ</h3>
+                        <p>Chúng tôi không bán hoặc chia sẻ thông tin cá nhân của bạn cho bên thứ ba</p>
+                    </div>
+                </div>
+
+                <div class="tip-item">
+                    <div class="tip-icon">
+                        <i class="bi bi-shield-check" style="color: #10b981;"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h3>Tuân Thủ Quy Định</h3>
+                        <p>Chúng tôi tuân thủ các quy định bảo vệ dữ liệu quốc tế</p>
+                    </div>
+                </div>
+
+                <div class="tip-item">
+                    <div class="tip-icon">
+                        <i class="bi bi-person-check-fill" style="color: #f59e0b;"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h3>Quyền Kiểm Soát</h3>
+                        <p>Bạn có toàn quyền kiểm soát dữ liệu của mình - xem, tải xuống, hoặc xóa bất cứ lúc nào</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data We Collect Card -->
+        <div class="manage-card">
+            <div class="manage-card-header">
+                <h2>Dữ Liệu Chúng Tôi Thu Thập</h2>
+                <p>Thông tin chúng tôi lưu trữ</p>
+            </div>
+
+            <ul class="data-list">
+                <li>
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span>Thông tin đăng nhập (email, mật khẩu đã mã hóa)</span>
+                </li>
+                <li>
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span>Thông tin liên hệ (số điện thoại nếu cung cấp)</span>
+                </li>
+                <li>
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span>Lịch sử đặt vé và giao dịch</span>
+                </li>
+                <li>
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span>Thông tin sử dụng website (để cải thiện trải nghiệm)</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

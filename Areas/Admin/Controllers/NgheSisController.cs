@@ -57,10 +57,18 @@ namespace QuanLySuKien.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,TenNgheSi,TheLoai,TieuSu,AnhDaiDien")] NgheSi ngheSi)
         {
+            // Check for duplicate name
+            if (await _context.NgheSis.AnyAsync(n => n.TenNgheSi == ngheSi.TenNgheSi))
+            {
+                ModelState.AddModelError("TenNgheSi", "Tên nghệ sĩ này đã tồn tại. Vui lòng chọn tên khác.");
+                return View(ngheSi);
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(ngheSi);
                 await _context.SaveChangesAsync();
+                TempData["Success"] = $"Đã thêm nghệ sĩ '{ngheSi.TenNgheSi}' thành công!";
                 return RedirectToAction(nameof(Index));
             }
             return View(ngheSi);
