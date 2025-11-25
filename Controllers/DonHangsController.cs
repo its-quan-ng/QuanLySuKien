@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,8 @@ using QuanLySuKien.Data;
 using QuanLySuKien.Models;
 using QuanLySuKien.Models.ViewModels;
 using Microsoft.AspNetCore.Antiforgery;
+using QRCoder;
+using OfficeOpenXml;
 
 namespace QuanLySuKien.Controllers
 {
@@ -17,10 +20,12 @@ namespace QuanLySuKien.Controllers
     public class DonHangsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public DonHangsController(ApplicationDbContext context)
+        public DonHangsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: DonHangs - Only Admin can view all orders
@@ -34,20 +39,16 @@ namespace QuanLySuKien.Controllers
         // GET: DonHangs/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var donHang = await _context.DonHangs
                 .Include(d => d.LoaiVe)
                 .Include(d => d.SuKien)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (donHang == null)
-            {
-                return NotFound();
-            }
 
+            if (donHang == null) return NotFound();
+
+            ViewData["Title"] = "Chi Tiết Đơn Hàng";
             return View(donHang);
         }
 
@@ -113,7 +114,7 @@ namespace QuanLySuKien.Controllers
                         SoDienThoai = model.SoDienThoai,
                         NgayDat = DateTime.Now,
                         TrangThai = "ChoDuyet",
-                        UserId = null // Guest checkout
+                        UserId = User.Identity.IsAuthenticated ? _userManager.GetUserId(User) : null
                     };
 
                     _context.DonHangs.Add(donHang);
@@ -138,25 +139,151 @@ namespace QuanLySuKien.Controllers
         // GET: DonHangs/MyOrders - Show current user's orders
         public async Task<IActionResult> MyOrders()
         {
-            // Get current user's email
+            var userId = _userManager.GetUserId(User);
             var userEmail = User.Identity?.Name;
 
-            if (string.IsNullOrEmpty(userEmail))
+            if (string.IsNullOrEmpty(userId))
             {
                 return RedirectToAction("Login", "Account", new { area = "Identity" });
             }
 
-            // Get all orders for this user
+            // Get all orders for this user (match by UserId OR Email)
             var orders = await _context.DonHangs
                 .Include(d => d.SuKien)
                     .ThenInclude(s => s.DiaDiem)
                 .Include(d => d.LoaiVe)
-                .Where(d => d.Email.ToLower() == userEmail.ToLower())
+                .Where(d => d.UserId == userId ||
+                           (d.Email != null && userEmail != null && d.Email.ToLower() == userEmail.ToLower()))
                 .OrderByDescending(d => d.NgayDat)
                 .ToListAsync();
 
             ViewData["Title"] = "Vé Của Tôi";
             return View(orders);
+        }
+
+        // GET: DonHangs/GetQRCode/id
+        public IActionResult GetQRCode(int id)
+        {
+            // Generate QR code data: Order ID + Event info
+            var qrData = $"ORDER-{id}-EVENTHUB";
+
+            using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
+            {
+                QRCodeData qrCodeData = qrGenerator.CreateQrCode(qrData, QRCodeGenerator.ECCLevel.Q);
+                using (PngByteQRCode qrCode = new PngByteQRCode(qrCodeData))
+                {
+                    byte[] qrCodeBytes = qrCode.GetGraphic(10);
+                    return File(qrCodeBytes, "image/png");
+                }
+            }
+        }
+
+        // GET: DonHangs/ExportExcel
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ExportExcel()
+        {
+            var orders = await _context.DonHangs
+                .Include(d => d.SuKien)
+                .Include(d => d.LoaiVe)
+                .OrderByDescending(d => d.NgayDat)
+                .ToListAsync();
+
+            using (var package = new ExcelPackage())
+            {
+                var worksheet = package.Workbook.Worksheets.Add("Orders");
+
+                // Headers
+                worksheet.Cells[1, 1].Value = "Order ID";
+                worksheet.Cells[1, 2].Value = "Khách Hàng";
+                worksheet.Cells[1, 3].Value = "Email";
+                worksheet.Cells[1, 4].Value = "Số ĐT";
+                worksheet.Cells[1, 5].Value = "Sự Kiện";
+                worksheet.Cells[1, 6].Value = "Loại Vé";
+                worksheet.Cells[1, 7].Value = "Số Lượng";
+                worksheet.Cells[1, 8].Value = "Tổng Tiền";
+                worksheet.Cells[1, 9].Value = "Trạng Thái";
+                worksheet.Cells[1, 10].Value = "Ngày Đặt";
+
+                // Style header
+                using (var range = worksheet.Cells[1, 1, 1, 10])
+                {
+                    range.Style.Font.Bold = true;
+                    range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(59, 130, 246));
+                    range.Style.Font.Color.SetColor(System.Drawing.Color.White);
+                }
+
+                // Data
+                int row = 2;
+                foreach (var order in orders)
+                {
+                    worksheet.Cells[row, 1].Value = order.Id;
+                    worksheet.Cells[row, 2].Value = order.TenKhachHang;
+                    worksheet.Cells[row, 3].Value = order.Email;
+                    worksheet.Cells[row, 4].Value = order.SoDienThoai;
+                    worksheet.Cells[row, 5].Value = order.SuKien.TenSuKien;
+                    worksheet.Cells[row, 6].Value = order.LoaiVe.TenLoai;
+                    worksheet.Cells[row, 7].Value = order.SoLuong;
+                    worksheet.Cells[row, 8].Value = order.TongTien;
+                    worksheet.Cells[row, 9].Value = order.TrangThai;
+                    worksheet.Cells[row, 10].Value = order.NgayDat.ToString("dd/MM/yyyy HH:mm");
+                    row++;
+                }
+
+                worksheet.Cells.AutoFitColumns();
+
+                var stream = new MemoryStream(package.GetAsByteArray());
+                var fileName = $"Orders_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+                return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
+        }
+
+        // GET: DonHangs/Edit/5
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null) return NotFound();
+            var donHang = await _context.DonHangs.FindAsync(id);
+            if (donHang == null) return NotFound();
+            ViewData["Title"] = "Chỉnh Sửa Đơn Hàng";
+            return View(donHang);
+        }
+
+        // POST: DonHangs/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,SuKienId,LoaiVeId,SoLuong,TongTien,TenKhachHang,Email,SoDienThoai,NgayDat,TrangThai")] DonHang donHang)
+        {
+            if (id != donHang.Id) return NotFound();
+
+            ModelState.Remove("SuKien");
+            ModelState.Remove("LoaiVe");
+
+            if (ModelState.IsValid)
+            {
+                _context.Update(donHang);
+                await _context.SaveChangesAsync();
+                TempData["Success"] = $"Đã cập nhật đơn hàng #{donHang.Id}";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(donHang);
+        }
+
+        // POST: DonHangs/Delete
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var donHang = await _context.DonHangs.FindAsync(id);
+            if (donHang != null)
+            {
+                _context.DonHangs.Remove(donHang);
+                await _context.SaveChangesAsync();
+                TempData["Success"] = $"Đã xóa đơn hàng #{id}";
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: DonHangs/Confirmation

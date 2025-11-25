@@ -53,6 +53,28 @@ namespace QuanLySuKien.Controllers
                 .Select(g => new { Status = g.Key, Count = g.Count() })
                 .ToListAsync();
 
+            // Revenue by month (last 6 months)
+            var sixMonthsAgo = DateTime.Now.AddMonths(-6);
+            var revenueByMonth = await _context.DonHangs
+                .Where(d => d.NgayDat >= sixMonthsAgo && (d.TrangThai == "DaXacNhan" || d.TrangThai == "DaThanhToan"))
+                .GroupBy(d => new { d.NgayDat.Year, d.NgayDat.Month })
+                .Select(g => new {
+                    Month = g.Key.Month,
+                    Year = g.Key.Year,
+                    Revenue = g.Sum(d => d.TongTien)
+                })
+                .OrderBy(x => x.Year).ThenBy(x => x.Month)
+                .ToListAsync();
+
+            // Events by category
+            var eventsByCategory = await _context.SuKiens
+                .Where(s => !string.IsNullOrEmpty(s.LoaiSuKien))
+                .GroupBy(s => s.LoaiSuKien)
+                .Select(g => new { Category = g.Key, Count = g.Count() })
+                .OrderByDescending(x => x.Count)
+                .Take(5)
+                .ToListAsync();
+
             ViewBag.TotalUsers = totalUsers;
             ViewBag.TotalEvents = totalEvents;
             ViewBag.TotalOrders = totalOrders;
@@ -60,6 +82,8 @@ namespace QuanLySuKien.Controllers
             ViewBag.RecentOrders = recentOrders;
             ViewBag.UpcomingEvents = upcomingEvents;
             ViewBag.OrdersByStatus = ordersByStatus;
+            ViewBag.RevenueByMonth = revenueByMonth;
+            ViewBag.EventsByCategory = eventsByCategory;
 
             return View();
         }

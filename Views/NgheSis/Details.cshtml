@@ -31,7 +31,7 @@
                         }
                     </div>
                 }
-                <button class="btn-follow-large" data-artist-id="@Model.Id">
+                <button class="btn-follow-large" onclick="followArtist(@Model.Id, '@Model.TenNgheSi')">
                     <i class="bi bi-plus-circle"></i>
                     Theo Dõi Nghệ Sĩ
                 </button>
@@ -103,3 +103,17 @@
         </div>
     </div>
 </div>
+
+<script>
+    function followArtist(artistId, artistName) {
+        const isAuthenticated = @User.Identity.IsAuthenticated.ToString().ToLower();
+
+        if (!isAuthenticated) {
+            alert('Bạn cần đăng nhập để thực hiện chức năng này!');
+            window.location.href = '/Identity/Account/Login';
+        } else {
+            alert('Đã theo dõi ' + artistName + '! Bạn sẽ nhận thông báo khi có sự kiện mới.');
+            // Future: API call to save follow relationship
+        }
+    }
+</script>

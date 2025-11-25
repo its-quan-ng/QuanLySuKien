@@ -79,6 +79,30 @@
         </div>
     </div>
 
+    <!-- Charts Row -->
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-xl-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <h5 class="mb-0"><i class="bi bi-graph-up text-success"></i> Doanh Thu 6 Tháng Gần Đây</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="revenueChart" height="80"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <h5 class="mb-0"><i class="bi bi-pie-chart text-warning"></i> Đơn Hàng Theo Trạng Thái</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="ordersChart" height="80"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row g-3">
         <!-- Recent Orders -->
         <div class="col-12 col-xl-8">
@@ -168,13 +192,6 @@
                         <a asp-controller="DiaDiems" asp-action="Index" class="btn btn-outline-danger">
                             <i class="bi bi-geo-alt"></i> Quản Lý Địa Điểm
                         </a>
-                        <hr>
-                        <form asp-action="CleanDuplicates" method="post" class="d-inline">
-                            <button type="submit" class="btn btn-outline-secondary w-100"
-                                    onclick="return confirm('Xóa tất cả địa điểm trùng lặp?')">
-                                <i class="bi bi-trash"></i> Xóa Địa Điểm Trùng
-                            </button>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -219,3 +236,13 @@
         transform: translateY(-2px);
     }
 </style>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="~/js/admin-dashboard.js"></script>
+    <script>
+        const revenueData = @Html.Raw(Json.Serialize(ViewBag.RevenueByMonth));
+        const ordersData = @Html.Raw(Json.Serialize(ViewBag.OrdersByStatus));
+        initDashboardCharts(revenueData, ordersData);
+    </script>
+}

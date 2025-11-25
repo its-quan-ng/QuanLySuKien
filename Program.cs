@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using QuanLySuKien.Data;
+using OfficeOpenXml;
+
+// Set EPPlus license for EPPlus 8+
+ExcelPackage.License.SetNonCommercialOrganization("My Noncommercial organization");
 
 var builder = WebApplication.CreateBuilder(args);
 
