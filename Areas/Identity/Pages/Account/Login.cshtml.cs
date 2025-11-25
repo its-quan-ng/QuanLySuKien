@@ -37,7 +37,16 @@ namespace QuanLySuKien.Areas.Identity.Pages.Account
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl ?? Url.Content("~/");
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+
+            // Clear external authentication cookies if any exist
+            try
+            {
+                await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+            }
+            catch
+            {
+                // Ignore if external scheme is not configured
+            }
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)

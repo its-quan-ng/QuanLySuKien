@@ -13,7 +13,7 @@ namespace QuanLySuKien.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20251124164905_add-user-data")]
-    partial class adduserdata
+    partial class AddUserData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace QuanLySuKien.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class adduserdata : Migration
+    public partial class AddUserData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
