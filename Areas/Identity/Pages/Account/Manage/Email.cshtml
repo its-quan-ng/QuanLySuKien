@@ -1,0 +1,168 @@
+@page
+@model EmailModel
+@{
+    ViewData["Title"] = "Quản Lý Email";
+    ViewData["ActivePage"] = "Email";
+}
+
+<div class="manage-container">
+    <!-- Sidebar Navigation -->
+    <div class="manage-sidebar">
+        <div class="manage-sidebar-header">
+            <a href="/" class="brand-link">
+                <i class="bi bi-arrow-left"></i>
+                <span>@User.Identity.Name</span>
+            </a>
+        </div>
+
+        <nav class="manage-nav">
+            <a href="/Identity/Account/Manage" class="manage-nav-item">
+                <i class="bi bi-person"></i>
+                <span>Hồ Sơ</span>
+            </a>
+            <a href="/Identity/Account/Manage/Email" class="manage-nav-item active">
+                <i class="bi bi-envelope"></i>
+                <span>Email</span>
+            </a>
+            <a href="/Identity/Account/Manage/ChangePassword" class="manage-nav-item">
+                <i class="bi bi-key"></i>
+                <span>Mật Khẩu</span>
+            </a>
+            <a href="/Identity/Account/Manage/TwoFactorAuthentication" class="manage-nav-item">
+                <i class="bi bi-shield-check"></i>
+                <span>Xác Thực Hai Yếu Tố</span>
+            </a>
+            <a href="/Identity/Account/Manage/PersonalData" class="manage-nav-item">
+                <i class="bi bi-file-person"></i>
+                <span>Dữ Liệu Cá Nhân</span>
+            </a>
+        </nav>
+
+        <div class="manage-sidebar-footer">
+            <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="/" method="post" class="logout-form">
+                <button type="submit" class="btn-logout">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Đăng Xuất</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="manage-content">
+        <div class="manage-header">
+            <div>
+                <h1>Quản Lý Email</h1>
+                <p class="manage-subtitle">Cập nhật địa chỉ email của bạn</p>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.StatusMessage))
+        {
+            <div class="alert alert-success" role="alert">
+                <i class="bi bi-check-circle"></i>
+                @Model.StatusMessage
+            </div>
+        }
+
+        <div class="manage-card">
+            <div class="manage-card-header">
+                <h2>Địa Chỉ Email</h2>
+                <p>Email hiện tại của bạn</p>
+            </div>
+
+            <form id="email-form" method="post" asp-page-handler="ChangeEmail" class="manage-form">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email hiện tại</label>
+                        <div class="input-with-icon">
+                            <i class="bi bi-envelope"></i>
+                            <input type="text" class="form-control" value="@Model.Email" disabled />
+                        </div>
+                        @if (!Model.IsEmailConfirmed)
+                        {
+                            <small class="form-text text-warning">
+                                <i class="bi bi-exclamation-triangle"></i>
+                                Email chưa được xác nhận
+                            </small>
+                        }
+                        else
+                        {
+                            <small class="form-text text-success">
+                                <i class="bi bi-check-circle"></i>
+                                Email đã được xác nhận
+                            </small>
+                        }
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label asp-for="Input.NewEmail">Email mới</label>
+                        <div class="input-with-icon">
+                            <i class="bi bi-envelope-plus"></i>
+                            <input asp-for="Input.NewEmail" class="form-control" placeholder="Nhập email mới" />
+                        </div>
+                        <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
+                        <small class="form-text text-muted">
+                            Sau khi thay đổi email, bạn sẽ cần xác nhận email mới
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-save">
+                        <i class="bi bi-check-circle"></i>
+                        Cập Nhật Email
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Email Info Card -->
+        <div class="manage-card">
+            <div class="manage-card-header">
+                <h2>Về Email Của Bạn</h2>
+                <p>Thông tin quan trọng</p>
+            </div>
+
+            <div class="tips-list">
+                <div class="tip-item">
+                    <div class="tip-icon">
+                        <i class="bi bi-info-circle-fill" style="color: #3b82f6;"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h3>Email dùng để đăng nhập</h3>
+                        <p>Email này sẽ được sử dụng làm tên đăng nhập của bạn</p>
+                    </div>
+                </div>
+
+                <div class="tip-item">
+                    <div class="tip-icon">
+                        <i class="bi bi-bell-fill" style="color: #f59e0b;"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h3>Nhận thông báo quan trọng</h3>
+                        <p>Chúng tôi sẽ gửi thông báo về sự kiện và đơn hàng qua email này</p>
+                    </div>
+                </div>
+
+                <div class="tip-item">
+                    <div class="tip-icon">
+                        <i class="bi bi-shield-fill-check" style="color: #10b981;"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h3>Khôi phục tài khoản</h3>
+                        <p>Email dùng để khôi phục mật khẩu khi cần thiết</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
