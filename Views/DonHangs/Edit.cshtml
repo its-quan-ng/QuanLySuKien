@@ -1,0 +1,64 @@
+@model QuanLySuKien.Models.DonHang
+
+@{
+    ViewData["Title"] = "Chỉnh Sửa Đơn Hàng";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="UserId" />
+                        <input type="hidden" asp-for="SuKienId" />
+                        <input type="hidden" asp-for="LoaiVeId" />
+                        <input type="hidden" asp-for="SoLuong" />
+                        <input type="hidden" asp-for="TongTien" />
+                        <input type="hidden" asp-for="NgayDat" />
+
+                        <div class="alert alert-info">
+                            <strong>Đơn hàng #@Model.Id</strong> - @Model.TenKhachHang
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Tên Khách Hàng</label>
+                                <input asp-for="TenKhachHang" class="form-control" readonly />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email</label>
+                                <input asp-for="Email" class="form-control" readonly />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="TrangThai" class="form-label">Trạng Thái <span class="text-danger">*</span></label>
+                            <select asp-for="TrangThai" class="form-select">
+                                <option value="ChoDuyet">Chờ Duyệt</option>
+                                <option value="DaXacNhan">Đã Xác Nhận</option>
+                                <option value="DaThanhToan">Đã Thanh Toán</option>
+                                <option value="DaHuy">Đã Hủy</option>
+                            </select>
+                        </div>
+
+                        <div class="alert alert-warning">
+                            <i class="bi bi-info-circle"></i> <strong>Lưu ý:</strong> Chỉ có thể thay đổi trạng thái đơn hàng
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-warning text-white">
+                                <i class="bi bi-check"></i> Cập Nhật
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-x"></i> Hủy
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

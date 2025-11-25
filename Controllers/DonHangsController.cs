@@ -39,20 +39,16 @@ namespace QuanLySuKien.Controllers
         // GET: DonHangs/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var donHang = await _context.DonHangs
                 .Include(d => d.LoaiVe)
                 .Include(d => d.SuKien)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (donHang == null)
-            {
-                return NotFound();
-            }
 
+            if (donHang == null) return NotFound();
+
+            ViewData["Title"] = "Chi Tiết Đơn Hàng";
             return View(donHang);
         }
 
@@ -240,6 +236,54 @@ namespace QuanLySuKien.Controllers
                 var fileName = $"Orders_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
                 return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
             }
+        }
+
+        // GET: DonHangs/Edit/5
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null) return NotFound();
+            var donHang = await _context.DonHangs.FindAsync(id);
+            if (donHang == null) return NotFound();
+            ViewData["Title"] = "Chỉnh Sửa Đơn Hàng";
+            return View(donHang);
+        }
+
+        // POST: DonHangs/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,SuKienId,LoaiVeId,SoLuong,TongTien,TenKhachHang,Email,SoDienThoai,NgayDat,TrangThai")] DonHang donHang)
+        {
+            if (id != donHang.Id) return NotFound();
+
+            ModelState.Remove("SuKien");
+            ModelState.Remove("LoaiVe");
+
+            if (ModelState.IsValid)
+            {
+                _context.Update(donHang);
+                await _context.SaveChangesAsync();
+                TempData["Success"] = $"Đã cập nhật đơn hàng #{donHang.Id}";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(donHang);
+        }
+
+        // POST: DonHangs/Delete
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var donHang = await _context.DonHangs.FindAsync(id);
+            if (donHang != null)
+            {
+                _context.DonHangs.Remove(donHang);
+                await _context.SaveChangesAsync();
+                TempData["Success"] = $"Đã xóa đơn hàng #{id}";
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: DonHangs/Confirmation
