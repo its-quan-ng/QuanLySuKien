@@ -15,15 +15,6 @@
             }
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
-            @if (User.IsInRole("Admin"))
-            {
-                <li>
-                    <a class="dropdown-item text-danger fw-bold" asp-area="" asp-controller="Admin" asp-action="Index">
-                        <i class="bi bi-shield-check"></i> Admin Panel
-                    </a>
-                </li>
-                <li><hr class="dropdown-divider"></li>
-            }
             <li>
                 <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
                     <i class="bi bi-person"></i> Tài Khoản
@@ -48,10 +39,10 @@
 else
 {
     <li class="nav-item">
-        <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Đăng Ký</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link btn btn-burgundy text-white ms-2" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        <a class="nav-link btn btn-burgundy text-white ms-2" asp-area="Identity" asp-page="/Account/Login">Đăng Nhập</a>
     </li>
 }
 </ul>

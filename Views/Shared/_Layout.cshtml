@@ -53,11 +53,30 @@
                     </form>
 
                     <ul class="navbar-nav ms-3">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="DonHangs" asp-action="MyOrders">
-                                <i class="bi bi-ticket-perforated"></i> Vé Của Tôi
-                            </a>
-                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="DonHangs" asp-action="MyOrders">
+                                    <i class="bi bi-ticket-perforated"></i> Vé Của Tôi
+                                </a>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-danger fw-bold" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-gear"></i> Admin
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="Index"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="Users"><i class="bi bi-people"></i> Quản Lý Users</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="Events"><i class="bi bi-calendar-event"></i> Quản Lý Sự Kiện</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" asp-controller="DonHangs" asp-action="Index"><i class="bi bi-receipt"></i> Tất Cả Đơn Hàng</a></li>
+                                </ul>
+                            </li>
+                        }
                     </ul>
 
                     <partial name="_LoginPartial" />
