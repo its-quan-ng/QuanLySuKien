@@ -180,16 +180,19 @@
                         <a asp-controller="Admin" asp-action="Users" class="btn btn-outline-primary">
                             <i class="bi bi-people"></i> Quản Lý Users
                         </a>
-                        <a asp-controller="SuKiens" asp-action="Index" class="btn btn-outline-success">
-                            <i class="bi bi-calendar-event"></i> Xem Sự Kiện
+                        <a asp-area="Admin" asp-controller="SuKiens" asp-action="Index" class="btn btn-outline-success">
+                            <i class="bi bi-calendar-event"></i> Quản Lý Sự Kiện
                         </a>
-                        <a asp-controller="DonHangs" asp-action="Index" class="btn btn-outline-warning">
-                            <i class="bi bi-receipt"></i> Xem Đơn Hàng
+                        <a asp-area="Admin" asp-controller="LoaiVes" asp-action="Index" class="btn btn-outline-purple">
+                            <i class="bi bi-ticket-perforated"></i> Quản Lý Loại Vé
                         </a>
-                        <a asp-controller="NgheSis" asp-action="Index" class="btn btn-outline-info">
+                        <a asp-area="Admin" asp-controller="DonHangs" asp-action="Index" class="btn btn-outline-warning">
+                            <i class="bi bi-receipt"></i> Quản Lý Đơn Hàng
+                        </a>
+                        <a asp-area="Admin" asp-controller="NgheSis" asp-action="Index" class="btn btn-outline-info">
                             <i class="bi bi-star"></i> Quản Lý Nghệ Sĩ
                         </a>
-                        <a asp-controller="DiaDiems" asp-action="Index" class="btn btn-outline-danger">
+                        <a asp-area="Admin" asp-controller="DiaDiems" asp-action="Index" class="btn btn-outline-danger">
                             <i class="bi bi-geo-alt"></i> Quản Lý Địa Điểm
                         </a>
                     </div>
@@ -234,6 +237,15 @@
     }
     .card:hover {
         transform: translateY(-2px);
+    }
+    .btn-outline-purple {
+        color: #6f42c1;
+        border-color: #6f42c1;
+    }
+    .btn-outline-purple:hover {
+        color: #fff;
+        background-color: #6f42c1;
+        border-color: #6f42c1;
     }
 </style>
 

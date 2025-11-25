@@ -49,13 +49,11 @@ namespace QuanLySuKien.Areas.Admin.Controllers
         // GET: Admin/LoaiVes/Create
         public IActionResult Create()
         {
-            ViewData["SuKienId"] = new SelectList(_context.SuKiens, "Id", "Id");
+            ViewData["SuKienId"] = new SelectList(_context.SuKiens, "Id", "TenSuKien");
             return View();
         }
 
         // POST: Admin/LoaiVes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,SuKienId,TenLoai,GiaVe,TongSoLuong,SoLuongConLai")] LoaiVe loaiVe)
@@ -64,9 +62,10 @@ namespace QuanLySuKien.Areas.Admin.Controllers
             {
                 _context.Add(loaiVe);
                 await _context.SaveChangesAsync();
+                TempData["Success"] = $"Đã thêm loại vé '{loaiVe.TenLoai}' thành công!";
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SuKienId"] = new SelectList(_context.SuKiens, "Id", "Id", loaiVe.SuKienId);
+            ViewData["SuKienId"] = new SelectList(_context.SuKiens, "Id", "TenSuKien", loaiVe.SuKienId);
             return View(loaiVe);
         }
 
@@ -83,13 +82,11 @@ namespace QuanLySuKien.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["SuKienId"] = new SelectList(_context.SuKiens, "Id", "Id", loaiVe.SuKienId);
+            ViewData["SuKienId"] = new SelectList(_context.SuKiens, "Id", "TenSuKien", loaiVe.SuKienId);
             return View(loaiVe);
         }
 
         // POST: Admin/LoaiVes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,SuKienId,TenLoai,GiaVe,TongSoLuong,SoLuongConLai")] LoaiVe loaiVe)
@@ -105,6 +102,7 @@ namespace QuanLySuKien.Areas.Admin.Controllers
                 {
                     _context.Update(loaiVe);
                     await _context.SaveChangesAsync();
+                    TempData["Success"] = $"Đã cập nhật loại vé '{loaiVe.TenLoai}' thành công!";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -119,7 +117,7 @@ namespace QuanLySuKien.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SuKienId"] = new SelectList(_context.SuKiens, "Id", "Id", loaiVe.SuKienId);
+            ViewData["SuKienId"] = new SelectList(_context.SuKiens, "Id", "TenSuKien", loaiVe.SuKienId);
             return View(loaiVe);
         }
 
@@ -151,9 +149,9 @@ namespace QuanLySuKien.Areas.Admin.Controllers
             if (loaiVe != null)
             {
                 _context.LoaiVes.Remove(loaiVe);
+                await _context.SaveChangesAsync();
+                TempData["Success"] = $"Đã xóa loại vé thành công!";
             }
-
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

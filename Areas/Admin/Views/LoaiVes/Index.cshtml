@@ -1,59 +1,77 @@
-﻿@model IEnumerable<QuanLySuKien.Models.LoaiVe>
+@model IEnumerable<QuanLySuKien.Models.LoaiVe>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Quản Lý Loại Vé";
 }
 
-<h1>Index</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-ticket-perforated"></i> Quản Lý Loại Vé</h1>
+    <a asp-action="Create" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Thêm Loại Vé Mới
+    </a>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TenLoai)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GiaVe)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TongSoLuong)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SoLuongConLai)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SuKien)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TenLoai)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GiaVe)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TongSoLuong)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SoLuongConLai)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SuKien.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        <i class="bi bi-check-circle"></i> @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
 }
-    </tbody>
-</table>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Sự Kiện</th>
+                        <th>Tên Loại Vé</th>
+                        <th>Giá Vé</th>
+                        <th>Tổng Số Lượng</th>
+                        <th>Số Lượng Còn Lại</th>
+                        <th>Đã Bán</th>
+                        <th style="width: 180px;">Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><strong>@item.SuKien.TenSuKien</strong></td>
+                            <td>@item.TenLoai</td>
+                            <td class="text-danger fw-bold">@item.GiaVe.ToString("N0") đ</td>
+                            <td>@item.TongSoLuong</td>
+                            <td>
+                                @if (item.SoLuongConLai == 0)
+                                {
+                                    <span class="badge bg-danger">Hết vé</span>
+                                }
+                                else if (item.SoLuongConLai < item.TongSoLuong * 0.2)
+                                {
+                                    <span class="badge bg-warning text-dark">@item.SoLuongConLai</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">@item.SoLuongConLai</span>
+                                }
+                            </td>
+                            <td>@(item.TongSoLuong - item.SoLuongConLai)</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">
+                                    <i class="bi bi-pencil"></i> Sửa
+                                </a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
