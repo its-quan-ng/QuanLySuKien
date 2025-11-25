@@ -31,11 +31,10 @@ namespace QuanLySuKien.Controllers
             // Search filter
             if (!string.IsNullOrEmpty(searchKeyword))
             {
-                searchKeyword = searchKeyword.ToLower();
                 query = query.Where(s =>
-                    s.TenSuKien.ToLower().Contains(searchKeyword) ||
-                    s.DiaDiem.TenDiaDiem.ToLower().Contains(searchKeyword) ||
-                    (s.LoaiSuKien != null && s.LoaiSuKien.ToLower().Contains(searchKeyword))
+                    EF.Functions.Like(s.TenSuKien, $"%{searchKeyword}%") ||
+                    EF.Functions.Like(s.DiaDiem.TenDiaDiem, $"%{searchKeyword}%") ||
+                    (s.LoaiSuKien != null && EF.Functions.Like(s.LoaiSuKien, $"%{searchKeyword}%"))
                 );
                 ViewBag.SearchKeyword = searchKeyword;
             }

@@ -57,10 +57,18 @@ namespace QuanLySuKien.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,TenDiaDiem,DiaChi,SucChua,MoTa")] DiaDiem diaDiem)
         {
+            // Check for duplicate name
+            if (await _context.DiaDiems.AnyAsync(d => d.TenDiaDiem == diaDiem.TenDiaDiem))
+            {
+                ModelState.AddModelError("TenDiaDiem", "Tên địa điểm này đã tồn tại. Vui lòng chọn tên khác.");
+                return View(diaDiem);
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(diaDiem);
                 await _context.SaveChangesAsync();
+                TempData["Success"] = $"Đã thêm địa điểm '{diaDiem.TenDiaDiem}' thành công!";
                 return RedirectToAction(nameof(Index));
             }
             return View(diaDiem);
@@ -94,12 +102,20 @@ namespace QuanLySuKien.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            // Check for duplicate name (excluding current record)
+            if (await _context.DiaDiems.AnyAsync(d => d.TenDiaDiem == diaDiem.TenDiaDiem && d.Id != id))
+            {
+                ModelState.AddModelError("TenDiaDiem", "Tên địa điểm này đã tồn tại. Vui lòng chọn tên khác.");
+                return View(diaDiem);
+            }
+
             if (ModelState.IsValid)
             {
                 try
                 {
                     _context.Update(diaDiem);
                     await _context.SaveChangesAsync();
+                    TempData["Success"] = $"Đã cập nhật địa điểm '{diaDiem.TenDiaDiem}' thành công!";
                 }
                 catch (DbUpdateConcurrencyException)
                 {

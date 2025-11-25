@@ -102,12 +102,20 @@ namespace QuanLySuKien.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            // Check for duplicate name (excluding current record)
+            if (await _context.NgheSis.AnyAsync(n => n.TenNgheSi == ngheSi.TenNgheSi && n.Id != id))
+            {
+                ModelState.AddModelError("TenNgheSi", "Tên nghệ sĩ này đã tồn tại. Vui lòng chọn tên khác.");
+                return View(ngheSi);
+            }
+
             if (ModelState.IsValid)
             {
                 try
                 {
                     _context.Update(ngheSi);
                     await _context.SaveChangesAsync();
+                    TempData["Success"] = $"Đã cập nhật nghệ sĩ '{ngheSi.TenNgheSi}' thành công!";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
