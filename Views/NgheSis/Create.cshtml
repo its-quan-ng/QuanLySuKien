@@ -1,0 +1,58 @@
+@model QuanLySuKien.Models.NgheSi
+@{
+    ViewData["Title"] = "Tạo Nghệ Sĩ Mới";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid">
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            <i class="bi bi-exclamation-triangle"></i> @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form asp-action="Create" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label asp-for="TenNgheSi" class="form-label">Tên Nghệ Sĩ <span class="text-danger">*</span></label>
+                            <input asp-for="TenNgheSi" class="form-control" />
+                            <span asp-validation-for="TenNgheSi" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="TheLoai" class="form-label">Thể Loại</label>
+                            <select asp-for="TheLoai" class="form-select">
+                                <option value="">-- Chọn --</option>
+                                <option>Pop</option>
+                                <option>Rock</option>
+                                <option>Ballad</option>
+                                <option>EDM</option>
+                                <option>Rap/Hip-Hop</option>
+                                <option>Classical</option>
+                                <option>Jazz</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="TieuSu" class="form-label">Tiểu Sử</label>
+                            <textarea asp-for="TieuSu" class="form-control" rows="4"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Ảnh Đại Diện</label>
+                            <input type="file" name="anhDaiDienFile" class="form-control" accept="image/*" />
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check"></i> Tạo Nghệ Sĩ
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

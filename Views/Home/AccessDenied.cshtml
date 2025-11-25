@@ -1,0 +1,50 @@
+@{
+    ViewData["Title"] = "Truy Cập Bị Từ Chối";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <div class="error-template">
+                <h1 class="display-1 text-danger">
+                    <i class="bi bi-shield-lock"></i>
+                </h1>
+                <h2 class="display-4">Truy Cập Bị Từ Chối</h2>
+                <p class="lead text-muted">
+                    Bạn không có quyền truy cập vào trang này.
+                </p>
+                <div class="alert alert-warning" role="alert">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <strong>Lý do:</strong> Trang này chỉ dành cho quản trị viên (Admin).
+                </div>
+                <div class="mt-4">
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-primary me-2">
+                        <i class="bi bi-house"></i> Về Trang Chủ
+                    </a>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <span class="text-muted">
+                            Đã đăng nhập: <strong>@User.Identity.Name</strong>
+                        </span>
+                    }
+                    else
+                    {
+                        <a href="@Url.Page("/Account/Login", new { area = "Identity" })" class="btn btn-secondary">
+                            <i class="bi bi-box-arrow-in-right"></i> Đăng Nhập
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .error-template {
+        padding: 40px 15px;
+        margin-top: 50px;
+    }
+    .display-1 {
+        font-size: 8rem;
+    }
+</style>

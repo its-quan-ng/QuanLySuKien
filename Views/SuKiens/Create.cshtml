@@ -1,62 +1,153 @@
-﻿@model QuanLySuKien.Models.SuKien
+@model QuanLySuKien.Models.SuKien
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Tạo Sự Kiện Mới";
+    Layout = "_AdminLayout";
 }
 
-<h1>Create</h1>
+<div class="container-fluid">
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            <i class="bi bi-check-circle"></i> @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            <i class="bi bi-exclamation-triangle"></i> @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
 
-<h4>SuKien</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="TenSuKien" class="control-label"></label>
-                <input asp-for="TenSuKien" class="form-control" />
-                <span asp-validation-for="TenSuKien" class="text-danger"></span>
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <form asp-action="Create" method="post" enctype="multipart/form-data">
+                        @if (!ViewData.ModelState.IsValid)
+                        {
+                            <div class="alert alert-danger">
+                                <h6><i class="bi bi-exclamation-triangle"></i> Vui lòng kiểm tra lại các lỗi sau:</h6>
+                                <div asp-validation-summary="All" class="mb-0"></div>
+                            </div>
+                        }
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h5 class="mb-3"><i class="bi bi-info-circle text-primary"></i> Thông Tin Sự Kiện</h5>
+
+                                <div class="mb-3">
+                                    <label asp-for="TenSuKien" class="form-label">Tên Sự Kiện <span class="text-danger">*</span></label>
+                                    <input asp-for="TenSuKien" class="form-control" placeholder="VD: Concert Đông Nhi 2025" />
+                                    <span asp-validation-for="TenSuKien" class="text-danger"></span>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="LoaiSuKien" class="form-label">Loại Sự Kiện</label>
+                                        <select asp-for="LoaiSuKien" class="form-select">
+                                            <option value="">-- Chọn loại --</option>
+                                            <option value="Concert">Concert</option>
+                                            <option value="Festival">Festival</option>
+                                            <option value="Workshop">Workshop</option>
+                                            <option value="Conference">Conference</option>
+                                            <option value="Exhibition">Exhibition</option>
+                                            <option value="Sports">Sports</option>
+                                            <option value="Theater">Theater</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="DiaDiemId" class="form-label">Địa Điểm <span class="text-danger">*</span></label>
+                                        <select asp-for="DiaDiemId" class="form-select" asp-items="ViewBag.DiaDiemId">
+                                            <option value="">-- Chọn địa điểm --</option>
+                                        </select>
+                                        <span asp-validation-for="DiaDiemId" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="NgayToChuc" class="form-label">Ngày Tổ Chức <span class="text-danger">*</span></label>
+                                        <input asp-for="NgayToChuc" type="date" class="form-control" />
+                                        <span asp-validation-for="NgayToChuc" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="GioToChuc" class="form-label">Giờ Tổ Chức <span class="text-danger">*</span></label>
+                                        <input asp-for="GioToChuc" type="time" class="form-control" />
+                                        <span asp-validation-for="GioToChuc" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="MoTa" class="form-label">Mô Tả</label>
+                                    <textarea asp-for="MoTa" class="form-control" rows="4"
+                                              placeholder="Mô tả chi tiết về sự kiện..."></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <h5 class="mb-3"><i class="bi bi-image text-success"></i> Hình Ảnh & Trạng Thái</h5>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Ảnh Bìa</label>
+                                    <input type="file" name="anhBiaFile" class="form-control" accept="image/*"
+                                           onchange="previewImage(this)" />
+                                    <small class="text-muted">JPG, PNG, GIF (Max 5MB)</small>
+                                    <div id="imagePreview" class="mt-2"></div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="TrangThai" class="form-label">Trạng Thái <span class="text-danger">*</span></label>
+                                    <select asp-for="TrangThai" class="form-select">
+                                        <option value="SapDienRa" selected>Sắp Diễn Ra</option>
+                                        <option value="DangDienRa">Đang Diễn Ra</option>
+                                        <option value="DaKetThuc">Đã Kết Thúc</option>
+                                        <option value="DaHuy">Đã Hủy</option>
+                                    </select>
+                                </div>
+
+                                <div class="alert alert-info">
+                                    <i class="bi bi-lightbulb"></i>
+                                    <small><strong>Tip:</strong> Sau khi tạo sự kiện, bạn cần thêm loại vé trong phần quản lý chi tiết</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-check-circle"></i> Tạo Sự Kiện
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary btn-lg">
+                                <i class="bi bi-x-circle"></i> Hủy
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="LoaiSuKien" class="control-label"></label>
-                <input asp-for="LoaiSuKien" class="form-control" />
-                <span asp-validation-for="LoaiSuKien" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DiaDiemId" class="control-label"></label>
-                <select asp-for="DiaDiemId" class ="form-control" asp-items="ViewBag.DiaDiemId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="NgayToChuc" class="control-label"></label>
-                <input asp-for="NgayToChuc" class="form-control" />
-                <span asp-validation-for="NgayToChuc" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="GioToChuc" class="control-label"></label>
-                <input asp-for="GioToChuc" class="form-control" />
-                <span asp-validation-for="GioToChuc" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AnhBia" class="control-label"></label>
-                <input asp-for="AnhBia" class="form-control" />
-                <span asp-validation-for="AnhBia" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MoTa" class="control-label"></label>
-                <input asp-for="MoTa" class="form-control" />
-                <span asp-validation-for="MoTa" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        function previewImage(input) {
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = '';
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `<img src="${e.target.result}" class="img-thumbnail mt-2" style="max-height: 200px; border-radius: 12px;">`;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
 }

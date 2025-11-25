@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.Antiforgery;
 
 namespace QuanLySuKien.Controllers
 {
+    [Authorize] // All order operations require login
     public class DonHangsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -21,7 +23,8 @@ namespace QuanLySuKien.Controllers
             _context = context;
         }
 
-        // GET: DonHangs
+        // GET: DonHangs - Only Admin can view all orders
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.DonHangs.Include(d => d.LoaiVe).Include(d => d.SuKien);
@@ -132,31 +135,27 @@ namespace QuanLySuKien.Controllers
             }
         }
 
-        // GET: DonHangs/MyOrders
-        public IActionResult MyOrders()
+        // GET: DonHangs/MyOrders - Show current user's orders
+        public async Task<IActionResult> MyOrders()
         {
-            return View();
-        }
+            // Get current user's email
+            var userEmail = User.Identity?.Name;
 
-        // POST: DonHangs/MyOrders
-        [HttpPost]
-        public async Task<IActionResult> MyOrders(string email)
-        {
-            if (string.IsNullOrEmpty(email))
+            if (string.IsNullOrEmpty(userEmail))
             {
-                ModelState.AddModelError("", "Vui lòng nhập email!");
-                return View();
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
             }
 
+            // Get all orders for this user
             var orders = await _context.DonHangs
                 .Include(d => d.SuKien)
                     .ThenInclude(s => s.DiaDiem)
                 .Include(d => d.LoaiVe)
-                .Where(d => d.Email.ToLower() == email.ToLower())
+                .Where(d => d.Email.ToLower() == userEmail.ToLower())
                 .OrderByDescending(d => d.NgayDat)
                 .ToListAsync();
 
-            ViewBag.SearchEmail = email;
+            ViewData["Title"] = "Vé Của Tôi";
             return View(orders);
         }
 

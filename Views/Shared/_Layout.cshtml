@@ -48,16 +48,19 @@
                     <form class="navbar-search-form" asp-controller="SuKiens" asp-action="Index" method="get">
                         <div class="navbar-search-wrapper">
                             <i class="bi bi-search"></i>
-                            <input type="text" name="search" class="navbar-search-input" placeholder="Tìm sự kiện...">
+                            <input type="text" name="searchKeyword" class="navbar-search-input" placeholder="Tìm sự kiện..." value="@Context.Request.Query["searchKeyword"]">
                         </div>
                     </form>
 
                     <ul class="navbar-nav ms-3">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="DonHangs" asp-action="MyOrders">
-                                <i class="bi bi-ticket-perforated"></i> Vé Của Tôi
-                            </a>
-                        </li>
+                        @if (User.Identity.IsAuthenticated && !User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="DonHangs" asp-action="MyOrders">
+                                    <i class="bi bi-ticket-perforated"></i> Vé Của Tôi
+                                </a>
+                            </li>
+                        }
                     </ul>
 
                     <partial name="_LoginPartial" />
