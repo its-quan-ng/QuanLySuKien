@@ -220,5 +220,39 @@ namespace QuanLySuKien.Controllers
 
             return RedirectToAction(nameof(Users));
         }
+
+        // GET: Admin/CleanDuplicates - Remove duplicate venues
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CleanDuplicates()
+        {
+            // Get all venues grouped by name
+            var duplicates = await _context.DiaDiems
+                .GroupBy(d => d.TenDiaDiem)
+                .Where(g => g.Count() > 1)
+                .ToListAsync();
+
+            int deletedCount = 0;
+
+            foreach (var group in duplicates)
+            {
+                // Keep first, delete others
+                var toDelete = group.Skip(1).ToList();
+                _context.DiaDiems.RemoveRange(toDelete);
+                deletedCount += toDelete.Count;
+            }
+
+            if (deletedCount > 0)
+            {
+                await _context.SaveChangesAsync();
+                TempData["Success"] = $"Đã xóa {deletedCount} địa điểm trùng lặp";
+            }
+            else
+            {
+                TempData["Success"] = "Không có địa điểm trùng lặp";
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

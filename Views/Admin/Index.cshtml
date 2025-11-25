@@ -168,6 +168,13 @@
                         <a asp-controller="DiaDiems" asp-action="Index" class="btn btn-outline-danger">
                             <i class="bi bi-geo-alt"></i> Quản Lý Địa Điểm
                         </a>
+                        <hr>
+                        <form asp-action="CleanDuplicates" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-outline-secondary w-100"
+                                    onclick="return confirm('Xóa tất cả địa điểm trùng lặp?')">
+                                <i class="bi bi-trash"></i> Xóa Địa Điểm Trùng
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

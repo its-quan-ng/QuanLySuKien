@@ -80,8 +80,15 @@ namespace QuanLySuKien.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([Bind("TenSuKien,LoaiSuKien,DiaDiemId,NgayToChuc,GioToChuc,AnhBia,MoTa,TrangThai")] SuKien suKien, IFormFile? anhBiaFile)
+        public async Task<IActionResult> Create([Bind("TenSuKien,LoaiSuKien,DiaDiemId,NgayToChuc,GioToChuc,MoTa,TrangThai")] SuKien suKien, IFormFile? anhBiaFile)
         {
+            // Remove navigation property validations
+            ModelState.Remove("AnhBia");
+            ModelState.Remove("DiaDiem");
+            ModelState.Remove("LoaiVes");
+            ModelState.Remove("DonHangs");
+            ModelState.Remove("NgheSis");
+
             if (ModelState.IsValid)
             {
                 // Handle image upload
@@ -109,6 +116,10 @@ namespace QuanLySuKien.Controllers
                 TempData["Success"] = $"Đã tạo sự kiện '{suKien.TenSuKien}' thành công";
                 return RedirectToAction(nameof(Index));
             }
+
+            // Debug: Show validation errors
+            var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+            TempData["Error"] = "Lỗi validation: " + string.Join(", ", errors);
 
             ViewData["DiaDiemId"] = new SelectList(_context.DiaDiems, "Id", "TenDiaDiem", suKien.DiaDiemId);
             return View(suKien);
@@ -138,12 +149,29 @@ namespace QuanLySuKien.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,TenSuKien,LoaiSuKien,DiaDiemId,NgayToChuc,GioToChuc,AnhBia,MoTa,TrangThai")] SuKien suKien, IFormFile? anhBiaFile)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,TenSuKien,LoaiSuKien,DiaDiemId,NgayToChuc,GioToChuc,MoTa,TrangThai")] SuKien suKien, IFormFile? anhBiaFile)
         {
             if (id != suKien.Id)
             {
                 return NotFound();
             }
+
+            // Get current event to preserve AnhBia
+            var existingEvent = await _context.SuKiens.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
+            if (existingEvent == null)
+            {
+                return NotFound();
+            }
+
+            // Preserve old image path
+            suKien.AnhBia = existingEvent.AnhBia;
+
+            // Remove navigation property validations
+            ModelState.Remove("AnhBia");
+            ModelState.Remove("DiaDiem");
+            ModelState.Remove("LoaiVes");
+            ModelState.Remove("DonHangs");
+            ModelState.Remove("NgheSis");
 
             if (ModelState.IsValid)
             {
