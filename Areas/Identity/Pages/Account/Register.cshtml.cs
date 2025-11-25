@@ -9,11 +9,16 @@ namespace QuanLySuKien.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public RegisterModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public RegisterModel(
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         [BindProperty]
@@ -56,6 +61,27 @@ namespace QuanLySuKien.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    // Auto create roles if not exist
+                    if (!await _roleManager.RoleExistsAsync("Admin"))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole("Admin"));
+                    }
+                    if (!await _roleManager.RoleExistsAsync("User"))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole("User"));
+                    }
+
+                    // First user becomes admin, others become regular users
+                    var allUsers = _userManager.Users.ToList();
+                    if (allUsers.Count == 1) // This is the first user
+                    {
+                        await _userManager.AddToRoleAsync(user, "Admin");
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, "User");
+                    }
+
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }

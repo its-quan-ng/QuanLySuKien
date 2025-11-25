@@ -1,0 +1,111 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-4">
+                <i class="bi bi-shield-check text-danger"></i>
+                Admin Dashboard
+            </h1>
+            <p class="lead text-muted">Chào mừng đến với trang quản trị EventHub</p>
+            <hr />
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Users Card -->
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-people-fill text-primary" style="font-size: 3rem;"></i>
+                    <h3 class="card-title mt-3">Quản Lý Users</h3>
+                    <p class="card-text text-muted">Xem và quản lý tài khoản người dùng</p>
+                    <a asp-action="Users" class="btn btn-primary">
+                        <i class="bi bi-arrow-right"></i> Truy Cập
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Events Card -->
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-calendar-event-fill text-success" style="font-size: 3rem;"></i>
+                    <h3 class="card-title mt-3">Quản Lý Sự Kiện</h3>
+                    <p class="card-text text-muted">Thêm, sửa, xóa sự kiện</p>
+                    <a asp-controller="SuKiens" asp-action="Index" class="btn btn-success">
+                        <i class="bi bi-arrow-right"></i> Truy Cập
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Card -->
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-ticket-perforated-fill text-warning" style="font-size: 3rem;"></i>
+                    <h3 class="card-title mt-3">Quản Lý Đơn Hàng</h3>
+                    <p class="card-text text-muted">Xem tất cả đơn hàng và vé</p>
+                    <a asp-controller="DonHangs" asp-action="Index" class="btn btn-warning text-white">
+                        <i class="bi bi-arrow-right"></i> Truy Cập
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Artists Card -->
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-star-fill text-info" style="font-size: 3rem;"></i>
+                    <h3 class="card-title mt-3">Quản Lý Nghệ Sĩ</h3>
+                    <p class="card-text text-muted">Thêm và chỉnh sửa nghệ sĩ</p>
+                    <a asp-controller="NgheSis" asp-action="Index" class="btn btn-info text-white">
+                        <i class="bi bi-arrow-right"></i> Truy Cập
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Venues Card -->
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-geo-alt-fill text-danger" style="font-size: 3rem;"></i>
+                    <h3 class="card-title mt-3">Quản Lý Địa Điểm</h3>
+                    <p class="card-text text-muted">Quản lý các địa điểm tổ chức sự kiện</p>
+                    <a asp-controller="DiaDiems" asp-action="Index" class="btn btn-danger">
+                        <i class="bi bi-arrow-right"></i> Truy Cập
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Card -->
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-gear-fill text-secondary" style="font-size: 3rem;"></i>
+                    <h3 class="card-title mt-3">Cài Đặt</h3>
+                    <p class="card-text text-muted">Cấu hình hệ thống</p>
+                    <a href="#" class="btn btn-secondary">
+                        <i class="bi bi-arrow-right"></i> Truy Cập
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle"></i>
+                <strong>Thông tin:</strong> Bạn đang đăng nhập với quyền Admin. Chỉ Admin mới có thể truy cập trang này.
+            </div>
+        </div>
+    </div>
+</div>

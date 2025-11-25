@@ -3,6 +3,23 @@
 -- Tạo data mẫu cho Demo/Testing
 -- ========================================
 
+-- XÓA DỮ LIỆU CŨ (theo thứ tự foreign key)
+DELETE FROM DonHang;
+DELETE FROM LoaiVe;
+DELETE FROM SuKien_NgheSi;
+DELETE FROM SuKien;
+DELETE FROM NgheSi;
+DELETE FROM DiaDiem;
+GO
+
+-- Reset IDENTITY seeds
+DBCC CHECKIDENT ('DonHang', RESEED, 0);
+DBCC CHECKIDENT ('LoaiVe', RESEED, 0);
+DBCC CHECKIDENT ('SuKien', RESEED, 0);
+DBCC CHECKIDENT ('NgheSi', RESEED, 0);
+DBCC CHECKIDENT ('DiaDiem', RESEED, 0);
+GO
+
 -- 1. INSERT DiaDiem (Giữ nguyên)
 INSERT INTO DiaDiem (TenDiaDiem, DiaChi, SucChua, MoTa) VALUES
 (N'Nhà hát Lớn Hà Nội', N'01 Tràng Tiền, Hoàn Kiếm, Hà Nội', 1000, N'Nhà hát lịch sử với kiến trúc Pháp cổ điển'),
