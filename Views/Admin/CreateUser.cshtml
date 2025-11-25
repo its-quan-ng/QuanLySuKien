@@ -1,0 +1,79 @@
+@{
+    ViewData["Title"] = "Tạo User Mới";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h3 mb-3">
+                <i class="bi bi-person-plus text-primary"></i> Tạo User Mới
+            </h1>
+            <p class="text-muted">Thêm tài khoản người dùng mới vào hệ thống</p>
+        </div>
+    </div>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            <i class="bi bi-exclamation-triangle"></i> @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <form method="post" asp-action="CreateUser">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input type="email" class="form-control" id="email" name="email"
+                                       placeholder="user@example.com" required>
+                            </div>
+                            <small class="text-muted">Email sẽ được dùng làm username</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mật Khẩu <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                <input type="password" class="form-control" id="password" name="password"
+                                       placeholder="Tối thiểu 6 ký tự" required minlength="6">
+                            </div>
+                            <small class="text-muted">Tối thiểu 6 ký tự</small>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Phân Quyền <span class="text-danger">*</span></label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="role" id="roleUser"
+                                       value="User" checked>
+                                <label class="form-check-label" for="roleUser">
+                                    <span class="badge bg-success">User</span> - Người dùng thông thường
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="role" id="roleAdmin"
+                                       value="Admin">
+                                <label class="form-check-label" for="roleAdmin">
+                                    <span class="badge bg-danger">Admin</span> - Quản trị viên (toàn quyền)
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Tạo User
+                            </button>
+                            <a asp-action="Users" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Hủy
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
