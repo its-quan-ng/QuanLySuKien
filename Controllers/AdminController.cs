@@ -111,7 +111,12 @@ namespace QuanLySuKien.Controllers
                 return RedirectToAction(nameof(CreateUser));
             }
 
-            var user = new IdentityUser { UserName = email, Email = email };
+            var user = new IdentityUser
+            {
+                UserName = email,
+                Email = email,
+                EmailConfirmed = true // Auto-confirm when created by admin
+            };
             var result = await _userManager.CreateAsync(user, password);
 
             if (result.Succeeded)
@@ -126,7 +131,7 @@ namespace QuanLySuKien.Controllers
                     await _userManager.AddToRoleAsync(user, "User"); // Default role
                 }
 
-                TempData["Success"] = $"Đã tạo user {email} thành công";
+                TempData["Success"] = $"Đã tạo user {email} thành công (Email đã được xác thực)";
                 return RedirectToAction(nameof(Users));
             }
 
