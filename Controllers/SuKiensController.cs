@@ -21,15 +21,31 @@ namespace QuanLySuKien.Controllers
         }
 
         // GET: SuKiens
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchKeyword)
         {
-            var applicationDbContext = _context.SuKiens
+            var query = _context.SuKiens
                 .Include(s => s.DiaDiem)
                 .Include(s => s.LoaiVes)
-                .Where(s => s.TrangThai == "SapDienRa" || s.TrangThai == "DangDienRa")
+                .Where(s => s.TrangThai == "SapDienRa" || s.TrangThai == "DangDienRa");
+
+            // Search filter
+            if (!string.IsNullOrEmpty(searchKeyword))
+            {
+                searchKeyword = searchKeyword.ToLower();
+                query = query.Where(s =>
+                    s.TenSuKien.ToLower().Contains(searchKeyword) ||
+                    s.DiaDiem.TenDiaDiem.ToLower().Contains(searchKeyword) ||
+                    (s.LoaiSuKien != null && s.LoaiSuKien.ToLower().Contains(searchKeyword))
+                );
+                ViewBag.SearchKeyword = searchKeyword;
+            }
+
+            var events = await query
                 .OrderBy(s => s.NgayToChuc)
-                .ThenBy(s => s.GioToChuc);
-            return View(await applicationDbContext.ToListAsync());
+                .ThenBy(s => s.GioToChuc)
+                .ToListAsync();
+
+            return View(events);
         }
 
         // GET: SuKiens/Details/5

@@ -19,11 +19,12 @@ namespace QuanLySuKien.Controllers
 
         public async Task<IActionResult> Index()
         {
-            // Lấy events cho carousel (ưu tiên có ảnh)
+            // Lấy events cho carousel (ưu tiên có ảnh, chỉ sắp diễn ra hoặc đang diễn ra)
             var carouselEvents = await _context.SuKiens
                 .Include(s => s.DiaDiem)
                 .Include(s => s.LoaiVes)
-                .Where(s => !string.IsNullOrEmpty(s.AnhBia))
+                .Where(s => !string.IsNullOrEmpty(s.AnhBia) &&
+                           (s.TrangThai == "SapDienRa" || s.TrangThai == "DangDienRa"))
                 .OrderBy(s => Guid.NewGuid()) // Random
                 .Take(5)
                 .ToListAsync();
@@ -39,11 +40,11 @@ namespace QuanLySuKien.Controllers
 
             ViewBag.CategoryCounts = categoryCounts;
 
-            // Lấy 6 sự kiện nổi bật
+            // Lấy 6 sự kiện nổi bật (sắp diễn ra HOẶC đang diễn ra)
             var featuredEvents = await _context.SuKiens
                 .Include(s => s.DiaDiem)
                 .Include(s => s.LoaiVes)
-                .Where(s => s.NgayToChuc >= DateOnly.FromDateTime(DateTime.Now))
+                .Where(s => s.TrangThai == "SapDienRa" || s.TrangThai == "DangDienRa")
                 .OrderBy(s => s.NgayToChuc)
                 .Take(6)
                 .ToListAsync();

@@ -48,7 +48,7 @@
                     <form class="navbar-search-form" asp-controller="SuKiens" asp-action="Index" method="get">
                         <div class="navbar-search-wrapper">
                             <i class="bi bi-search"></i>
-                            <input type="text" name="search" class="navbar-search-input" placeholder="Tìm sự kiện...">
+                            <input type="text" name="searchKeyword" class="navbar-search-input" placeholder="Tìm sự kiện..." value="@Context.Request.Query["searchKeyword"]">
                         </div>
                     </form>
 
