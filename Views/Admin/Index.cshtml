@@ -2,110 +2,213 @@
     ViewData["Title"] = "Admin Dashboard";
 }
 
-<div class="container mt-4">
+<div class="container-fluid">
     <div class="row mb-4">
         <div class="col-12">
-            <h1 class="display-4">
-                <i class="bi bi-shield-check text-danger"></i>
-                Admin Dashboard
+            <h1 class="h3 mb-3">
+                <i class="bi bi-speedometer2 text-danger"></i> Admin Dashboard
             </h1>
-            <p class="lead text-muted">Chào mừng đến với trang quản trị EventHub</p>
-            <hr />
+            <p class="text-muted">Tổng quan hệ thống EventHub</p>
         </div>
     </div>
 
-    <div class="row g-4">
-        <!-- Users Card -->
-        <div class="col-md-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-body text-center">
-                    <i class="bi bi-people-fill text-primary" style="font-size: 3rem;"></i>
-                    <h3 class="card-title mt-3">Quản Lý Users</h3>
-                    <p class="card-text text-muted">Xem và quản lý tài khoản người dùng</p>
-                    <a asp-action="Users" class="btn btn-primary">
-                        <i class="bi bi-arrow-right"></i> Truy Cập
-                    </a>
+    <!-- Statistics Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-1">Tổng Users</h6>
+                            <h3 class="mb-0 fw-bold">@ViewBag.TotalUsers</h3>
+                        </div>
+                        <div class="text-primary" style="font-size: 2.5rem;">
+                            <i class="bi bi-people"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Events Card -->
-        <div class="col-md-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-body text-center">
-                    <i class="bi bi-calendar-event-fill text-success" style="font-size: 3rem;"></i>
-                    <h3 class="card-title mt-3">Quản Lý Sự Kiện</h3>
-                    <p class="card-text text-muted">Thêm, sửa, xóa sự kiện</p>
-                    <a asp-controller="SuKiens" asp-action="Index" class="btn btn-success">
-                        <i class="bi bi-arrow-right"></i> Truy Cập
-                    </a>
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-1">Tổng Sự Kiện</h6>
+                            <h3 class="mb-0 fw-bold">@ViewBag.TotalEvents</h3>
+                        </div>
+                        <div class="text-success" style="font-size: 2.5rem;">
+                            <i class="bi bi-calendar-event"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Orders Card -->
-        <div class="col-md-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-body text-center">
-                    <i class="bi bi-ticket-perforated-fill text-warning" style="font-size: 3rem;"></i>
-                    <h3 class="card-title mt-3">Quản Lý Đơn Hàng</h3>
-                    <p class="card-text text-muted">Xem tất cả đơn hàng và vé</p>
-                    <a asp-controller="DonHangs" asp-action="Index" class="btn btn-warning text-white">
-                        <i class="bi bi-arrow-right"></i> Truy Cập
-                    </a>
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-1">Tổng Đơn Hàng</h6>
+                            <h3 class="mb-0 fw-bold">@ViewBag.TotalOrders</h3>
+                        </div>
+                        <div class="text-warning" style="font-size: 2.5rem;">
+                            <i class="bi bi-receipt"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Artists Card -->
-        <div class="col-md-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-body text-center">
-                    <i class="bi bi-star-fill text-info" style="font-size: 3rem;"></i>
-                    <h3 class="card-title mt-3">Quản Lý Nghệ Sĩ</h3>
-                    <p class="card-text text-muted">Thêm và chỉnh sửa nghệ sĩ</p>
-                    <a asp-controller="NgheSis" asp-action="Index" class="btn btn-info text-white">
-                        <i class="bi bi-arrow-right"></i> Truy Cập
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Venues Card -->
-        <div class="col-md-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-body text-center">
-                    <i class="bi bi-geo-alt-fill text-danger" style="font-size: 3rem;"></i>
-                    <h3 class="card-title mt-3">Quản Lý Địa Điểm</h3>
-                    <p class="card-text text-muted">Quản lý các địa điểm tổ chức sự kiện</p>
-                    <a asp-controller="DiaDiems" asp-action="Index" class="btn btn-danger">
-                        <i class="bi bi-arrow-right"></i> Truy Cập
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Settings Card -->
-        <div class="col-md-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-body text-center">
-                    <i class="bi bi-gear-fill text-secondary" style="font-size: 3rem;"></i>
-                    <h3 class="card-title mt-3">Cài Đặt</h3>
-                    <p class="card-text text-muted">Cấu hình hệ thống</p>
-                    <a href="#" class="btn btn-secondary">
-                        <i class="bi bi-arrow-right"></i> Truy Cập
-                    </a>
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-1">Doanh Thu</h6>
+                            <h3 class="mb-0 fw-bold">@ViewBag.TotalRevenue.ToString("N0") đ</h3>
+                        </div>
+                        <div class="text-danger" style="font-size: 2.5rem;">
+                            <i class="bi bi-currency-dollar"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row mt-5">
-        <div class="col-12">
-            <div class="alert alert-info">
-                <i class="bi bi-info-circle"></i>
-                <strong>Thông tin:</strong> Bạn đang đăng nhập với quyền Admin. Chỉ Admin mới có thể truy cập trang này.
+    <div class="row g-3">
+        <!-- Recent Orders -->
+        <div class="col-12 col-xl-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <h5 class="mb-0"><i class="bi bi-clock-history"></i> Đơn Hàng Gần Đây</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Khách Hàng</th>
+                                    <th>Sự Kiện</th>
+                                    <th>Loại Vé</th>
+                                    <th>SL</th>
+                                    <th>Tổng Tiền</th>
+                                    <th>Trạng Thái</th>
+                                    <th>Ngày Đặt</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var order in ViewBag.RecentOrders)
+                                {
+                                    <tr>
+                                        <td><strong>#@order.Id</strong></td>
+                                        <td>@order.TenKhachHang</td>
+                                        <td>@order.SuKien.TenSuKien</td>
+                                        <td>@order.LoaiVe.TenLoai</td>
+                                        <td>@order.SoLuong</td>
+                                        <td class="fw-bold">@order.TongTien.ToString("N0") đ</td>
+                                        <td>
+                                            @if (order.TrangThai == "ChoDuyet")
+                                            {
+                                                <span class="badge bg-warning">Chờ Duyệt</span>
+                                            }
+                                            else if (order.TrangThai == "DaXacNhan")
+                                            {
+                                                <span class="badge bg-success">Đã Xác Nhận</span>
+                                            }
+                                            else if (order.TrangThai == "DaHuy")
+                                            {
+                                                <span class="badge bg-danger">Đã Hủy</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary">@order.TrangThai</span>
+                                            }
+                                        </td>
+                                        <td>@order.NgayDat.ToString("dd/MM/yyyy HH:mm")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer bg-white text-center">
+                    <a asp-controller="DonHangs" asp-action="Index" class="btn btn-outline-primary btn-sm">
+                        Xem Tất Cả <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-12 col-xl-4">
+            <!-- Quick Actions -->
+            <div class="card border-0 shadow-sm mb-3">
+                <div class="card-header bg-white border-bottom">
+                    <h5 class="mb-0"><i class="bi bi-lightning"></i> Thao Tác Nhanh</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a asp-controller="Admin" asp-action="Users" class="btn btn-outline-primary">
+                            <i class="bi bi-people"></i> Quản Lý Users
+                        </a>
+                        <a asp-controller="SuKiens" asp-action="Index" class="btn btn-outline-success">
+                            <i class="bi bi-calendar-event"></i> Xem Sự Kiện
+                        </a>
+                        <a asp-controller="DonHangs" asp-action="Index" class="btn btn-outline-warning">
+                            <i class="bi bi-receipt"></i> Xem Đơn Hàng
+                        </a>
+                        <a asp-controller="NgheSis" asp-action="Index" class="btn btn-outline-info">
+                            <i class="bi bi-star"></i> Quản Lý Nghệ Sĩ
+                        </a>
+                        <a asp-controller="DiaDiems" asp-action="Index" class="btn btn-outline-danger">
+                            <i class="bi bi-geo-alt"></i> Quản Lý Địa Điểm
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming Events -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <h5 class="mb-0"><i class="bi bi-calendar-check"></i> Sự Kiện Sắp Tới</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        @foreach (var evt in ViewBag.UpcomingEvents)
+                        {
+                            <div class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="mb-1">@evt.TenSuKien</h6>
+                                        <p class="mb-1 text-muted small">
+                                            <i class="bi bi-geo-alt"></i> @evt.DiaDiem.TenDiaDiem
+                                        </p>
+                                        <small class="text-primary">
+                                            <i class="bi bi-calendar"></i> @evt.NgayToChuc.ToString("dd/MM/yyyy")
+                                            <i class="bi bi-clock ms-2"></i> @evt.GioToChuc.ToString("HH:mm")
+                                        </small>
+                                    </div>
+                                    <span class="badge bg-success">@evt.TrangThai</span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .card {
+        transition: transform 0.2s;
+    }
+    .card:hover {
+        transform: translateY(-2px);
+    }
+</style>
