@@ -1,0 +1,83 @@
+@page
+@model QuanLySuKien.Areas.Identity.Pages.Account.RegisterModel
+
+@{
+    ViewData["Title"] = "Đăng Ký";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - EventHub</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <!-- Left Side - Branding -->
+        <div class="auth-left">
+            <div class="auth-branding">
+                <a href="/" class="brand-logo">
+                    <span class="brand-text">EventHub</span>
+                </a>
+                <h1>Khám Phá Sự Kiện Cá Nhân Hóa</h1>
+                <p>Đăng ký để nhận gợi ý sự kiện phù hợp, theo dõi nghệ sĩ yêu thích và quản lý vé dễ dàng</p>
+                <div class="auth-illustration">
+                    <i class="bi bi-stars"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side - Form -->
+        <div class="auth-right">
+            <div class="auth-form-container">
+                <h2>Tạo Tài Khoản</h2>
+
+                <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.Email">Email</label>
+                        <input asp-for="Input.Email" class="form-control" placeholder="example@email.com" autocomplete="username" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.Password">Mật khẩu</label>
+                        <input asp-for="Input.Password" type="password" class="form-control" placeholder="Tối thiểu 6 ký tự" autocomplete="new-password" />
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.ConfirmPassword">Xác nhận mật khẩu</label>
+                        <input asp-for="Input.ConfirmPassword" type="password" class="form-control" placeholder="Nhập lại mật khẩu" autocomplete="new-password" />
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-auth-primary">
+                        <i class="bi bi-check-circle"></i> Tạo Tài Khoản
+                    </button>
+
+                    <div class="auth-divider">
+                        <span>Đã có tài khoản?</span>
+                    </div>
+
+                    <a asp-page="./Login" class="btn btn-auth-secondary">
+                        <i class="bi bi-box-arrow-in-right"></i> Đăng Nhập
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>

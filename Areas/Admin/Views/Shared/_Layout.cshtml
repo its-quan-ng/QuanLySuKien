@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin - EventHub</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+</head>
+<body class="admin-body">
+    <!-- Admin Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark admin-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="bi bi-shield-check"></i>
+                EventHub Admin
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="adminNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="bi bi-house"></i> Về Trang Chủ
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <partial name="_LoginPartial" />
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <div class="admin-sidebar">
+            <div class="sidebar-menu">
+                <div class="sidebar-section">
+                    <h6>QUẢN LÝ NỘI DUNG</h6>
+                    <a asp-area="Admin" asp-controller="SuKiens" asp-action="Index" class="sidebar-item">
+                        <i class="bi bi-calendar-event"></i>
+                        <span>Sự Kiện</span>
+                    </a>
+                    <a asp-area="Admin" asp-controller="NgheSis" asp-action="Index" class="sidebar-item">
+                        <i class="bi bi-person"></i>
+                        <span>Nghệ Sĩ</span>
+                    </a>
+                    <a asp-area="Admin" asp-controller="DiaDiems" asp-action="Index" class="sidebar-item">
+                        <i class="bi bi-geo-alt"></i>
+                        <span>Địa Điểm</span>
+                    </a>
+                    <a asp-area="Admin" asp-controller="LoaiVes" asp-action="Index" class="sidebar-item">
+                        <i class="bi bi-ticket-perforated"></i>
+                        <span>Loại Vé</span>
+                    </a>
+                </div>
+                <div class="sidebar-section">
+                    <h6>BÁN HÀNG</h6>
+                    <a asp-area="Admin" asp-controller="DonHangs" asp-action="Index" class="sidebar-item">
+                        <i class="bi bi-receipt"></i>
+                        <span>Đơn Hàng</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="admin-content">
+            <main role="main">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
