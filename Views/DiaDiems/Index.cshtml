@@ -21,6 +21,14 @@
 
 <!-- Venues Grid -->
 <div class="container venues-container">
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="alert alert-info d-flex justify-content-between align-items-center mb-3">
+            <div><i class="bi bi-shield-check"></i> <strong>Admin Mode</strong></div>
+            <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Tạo Địa Điểm Mới</a>
+        </div>
+    }
+
     <div class="venues-grid">
         @if (Model != null && Model.Any())
         {
@@ -31,8 +39,20 @@
                 var icon = icons[index % icons.Length];
                 index++;
 
-                <div class="venue-card">
+                <div class="venue-card" style="position: relative;">
                     <a asp-controller="DiaDiems" asp-action="Details" asp-route-id="@venue.Id" class="venue-card-overlay"></a>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div style="position: absolute; top: 10px; right: 10px; z-index: 10; display: flex; gap: 5px;">
+                            <a asp-action="Edit" asp-route-id="@venue.Id" class="btn btn-sm btn-warning" title="Edit">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@venue.Id" class="btn btn-sm btn-danger" title="Delete">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    }
 
                     <div class="venue-card-image" style="background: @gradient;">
                         <div class="venue-icon-wrapper">

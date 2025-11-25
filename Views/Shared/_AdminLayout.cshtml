@@ -13,8 +13,7 @@
     <style>
         body {
             font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            background-attachment: fixed;
+            background: #f8f9fa;
         }
 
         /* Sidebar */
@@ -24,13 +23,13 @@
             left: 0;
             height: 100vh;
             width: 280px;
-            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background: linear-gradient(180deg, #1e293b 0%, #334155 100%);
             color: white;
             overflow-y: auto;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 1000;
-            box-shadow: 4px 0 24px rgba(0,0,0,0.3);
-            border-right: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+            border-right: 1px solid #e5e7eb;
         }
 
         .admin-sidebar .brand {
@@ -38,24 +37,20 @@
             font-size: 1.4rem;
             font-weight: 700;
             text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.15);
             color: white;
             text-decoration: none;
             display: block;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             transition: all 0.3s;
         }
 
         .admin-sidebar .brand:hover {
-            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-            transform: scale(1.02);
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
         }
 
         .admin-sidebar .brand i {
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #fbbf24;
         }
 
         .sidebar-menu {
@@ -91,16 +86,15 @@
             top: 0;
             height: 100%;
             width: 4px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
             transform: scaleY(0);
             transition: transform 0.3s;
         }
 
         .menu-item:hover {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            background: rgba(59, 130, 246, 0.15);
             color: white;
             transform: translateX(4px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
 
         .menu-item:hover::before {
@@ -108,9 +102,8 @@
         }
 
         .menu-item.active {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3));
+            background: rgba(59, 130, 246, 0.2);
             color: white;
-            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
         }
 
         .menu-item.active::before {
@@ -132,26 +125,22 @@
 
         /* Top Header */
         .admin-header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: white;
             padding: 20px 35px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 999;
-            border-bottom: 1px solid rgba(255,255,255,0.3);
+            border-bottom: 1px solid #e5e7eb;
         }
 
         .admin-header .page-title {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #1e293b;
             margin: 0;
         }
 
@@ -159,24 +148,20 @@
             display: flex;
             align-items: center;
             gap: 16px;
-            background: rgba(255,255,255,0.5);
-            padding: 8px 16px;
-            border-radius: 50px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
         .admin-user-info .user-avatar {
             width: 44px;
             height: 44px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: bold;
             font-size: 1.1rem;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
         }
 
         .admin-user-info .user-details {
@@ -223,15 +208,14 @@
         /* Content Area */
         .admin-content {
             padding: 35px;
-            background: rgba(255,255,255,0.05);
+            background: #f8f9fa;
         }
 
         .admin-content .card {
-            border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
 
         /* Responsive */

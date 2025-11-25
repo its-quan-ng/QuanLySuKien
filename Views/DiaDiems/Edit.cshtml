@@ -1,0 +1,44 @@
+@model QuanLySuKien.Models.DiaDiem
+@{
+    ViewData["Title"] = "Chỉnh Sửa Địa Điểm";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <div class="mb-3">
+                            <label asp-for="TenDiaDiem" class="form-label">Tên Địa Điểm <span class="text-danger">*</span></label>
+                            <input asp-for="TenDiaDiem" class="form-control" />
+                            <span asp-validation-for="TenDiaDiem" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="DiaChi" class="form-label">Địa Chỉ <span class="text-danger">*</span></label>
+                            <input asp-for="DiaChi" class="form-control" />
+                            <span asp-validation-for="DiaChi" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="SucChua" class="form-label">Sức Chứa <span class="text-danger">*</span></label>
+                            <input asp-for="SucChua" type="number" class="form-control" min="1" />
+                            <span asp-validation-for="SucChua" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="MoTa" class="form-label">Mô Tả</label>
+                            <textarea asp-for="MoTa" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-warning text-white">
+                                <i class="bi bi-check"></i> Cập Nhật
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

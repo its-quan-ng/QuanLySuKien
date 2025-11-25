@@ -260,9 +260,37 @@ namespace QuanLySuKien.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var suKien = await _context.SuKiens.FindAsync(id);
+
             if (suKien != null)
             {
-                // Delete image if exists
+                // Step 1: Get all LoaiVe IDs for this event
+                var loaiVeIds = await _context.LoaiVes
+                    .Where(lv => lv.SuKienId == id)
+                    .Select(lv => lv.Id)
+                    .ToListAsync();
+
+                // Step 2: Delete ALL orders related to this event
+                // (both via SuKienId and via LoaiVeId)
+                var ordersToDelete = await _context.DonHangs
+                    .Where(d => d.SuKienId == id || loaiVeIds.Contains(d.LoaiVeId))
+                    .ToListAsync();
+
+                if (ordersToDelete.Any())
+                {
+                    _context.DonHangs.RemoveRange(ordersToDelete);
+                }
+
+                // Step 3: Delete all ticket types
+                var loaiVesToDelete = await _context.LoaiVes
+                    .Where(lv => lv.SuKienId == id)
+                    .ToListAsync();
+
+                if (loaiVesToDelete.Any())
+                {
+                    _context.LoaiVes.RemoveRange(loaiVesToDelete);
+                }
+
+                // Step 4: Delete image if exists
                 if (!string.IsNullOrEmpty(suKien.AnhBia))
                 {
                     var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", suKien.AnhBia.TrimStart('/'));
@@ -272,9 +300,11 @@ namespace QuanLySuKien.Controllers
                     }
                 }
 
+                // Step 5: Delete the event
                 _context.SuKiens.Remove(suKien);
                 await _context.SaveChangesAsync();
-                TempData["Success"] = $"Đã xóa sự kiện '{suKien.TenSuKien}' thành công";
+
+                TempData["Success"] = $"Đã xóa sự kiện '{suKien.TenSuKien}' và {ordersToDelete.Count} đơn hàng liên quan";
             }
 
             return RedirectToAction(nameof(Index));
