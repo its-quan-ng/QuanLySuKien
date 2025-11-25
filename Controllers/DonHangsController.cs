@@ -135,31 +135,27 @@ namespace QuanLySuKien.Controllers
             }
         }
 
-        // GET: DonHangs/MyOrders
-        public IActionResult MyOrders()
+        // GET: DonHangs/MyOrders - Show current user's orders
+        public async Task<IActionResult> MyOrders()
         {
-            return View();
-        }
+            // Get current user's email
+            var userEmail = User.Identity?.Name;
 
-        // POST: DonHangs/MyOrders
-        [HttpPost]
-        public async Task<IActionResult> MyOrders(string email)
-        {
-            if (string.IsNullOrEmpty(email))
+            if (string.IsNullOrEmpty(userEmail))
             {
-                ModelState.AddModelError("", "Vui lòng nhập email!");
-                return View();
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
             }
 
+            // Get all orders for this user
             var orders = await _context.DonHangs
                 .Include(d => d.SuKien)
                     .ThenInclude(s => s.DiaDiem)
                 .Include(d => d.LoaiVe)
-                .Where(d => d.Email.ToLower() == email.ToLower())
+                .Where(d => d.Email.ToLower() == userEmail.ToLower())
                 .OrderByDescending(d => d.NgayDat)
                 .ToListAsync();
 
-            ViewBag.SearchEmail = email;
+            ViewData["Title"] = "Vé Của Tôi";
             return View(orders);
         }
 
