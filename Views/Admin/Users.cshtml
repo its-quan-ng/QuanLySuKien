@@ -14,16 +14,37 @@
         </div>
     </div>
 
+    <!-- Alert Messages -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            <i class="bi bi-check-circle"></i> @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            <i class="bi bi-exclamation-triangle"></i> @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
     <div class="row">
         <div class="col-12">
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white border-bottom">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Tổng số: @Model.Count users</h5>
                         <div>
-                            <span class="badge bg-danger">Admin: @Model.Count(u => u.Roles.Contains("Admin"))</span>
-                            <span class="badge bg-success ms-2">User: @Model.Count(u => u.Roles.Contains("User"))</span>
+                            <h5 class="mb-0">Tổng số: @Model.Count users</h5>
+                            <div class="mt-2">
+                                <span class="badge bg-danger">Admin: @Model.Count(u => u.Roles.Contains("Admin"))</span>
+                                <span class="badge bg-success ms-2">User: @Model.Count(u => u.Roles.Contains("User"))</span>
+                            </div>
                         </div>
+                        <a asp-action="CreateUser" class="btn btn-primary">
+                            <i class="bi bi-plus-circle"></i> Tạo User Mới
+                        </a>
                     </div>
                 </div>
                 <div class="card-body p-0">
@@ -71,15 +92,13 @@
                                         </td>
                                         <td>
                                             <div class="btn-group btn-group-sm" role="group">
-                                                <button type="button" class="btn btn-outline-primary" title="View">
-                                                    <i class="bi bi-eye"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-outline-warning" title="Edit Roles">
+                                                <a asp-action="EditUserRoles" asp-route-id="@user.Id" class="btn btn-outline-warning" title="Edit Roles">
                                                     <i class="bi bi-pencil"></i>
-                                                </button>
+                                                </a>
                                                 @if (!user.Roles.Contains("Admin"))
                                                 {
-                                                    <button type="button" class="btn btn-outline-danger" title="Delete">
+                                                    <button type="button" class="btn btn-outline-danger" title="Delete"
+                                                            onclick="confirmDelete('@user.Id', '@user.Email')">
                                                         <i class="bi bi-trash"></i>
                                                     </button>
                                                 }
@@ -103,3 +122,36 @@
         </div>
     </div>
 </div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-exclamation-triangle text-danger"></i> Xác Nhận Xóa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc muốn xóa user <strong id="deleteUserEmail"></strong>?
+                <br><small class="text-danger">Hành động này không thể hoàn tác!</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <form id="deleteForm" method="post" asp-action="DeleteUser" class="d-inline">
+                    <input type="hidden" name="id" id="deleteUserId" />
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Xóa
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmDelete(userId, userEmail) {
+        document.getElementById('deleteUserId').value = userId;
+        document.getElementById('deleteUserEmail').textContent = userEmail;
+        new bootstrap.Modal(document.getElementById('deleteModal')).show();
+    }
+</script>
