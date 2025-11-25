@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.Antiforgery;
 
 namespace QuanLySuKien.Controllers
 {
+    [Authorize] // All order operations require login
     public class DonHangsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -21,7 +23,8 @@ namespace QuanLySuKien.Controllers
             _context = context;
         }
 
-        // GET: DonHangs
+        // GET: DonHangs - Only Admin can view all orders
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.DonHangs.Include(d => d.LoaiVe).Include(d => d.SuKien);
