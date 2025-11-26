@@ -11,7 +11,14 @@
             <div class="artist-hero-image">
                 @if (!string.IsNullOrEmpty(Model.AnhDaiDien))
                 {
-                    <img src="@Model.AnhDaiDien" alt="@Model.TenNgheSi">
+                    @if (Model.AnhDaiDien.StartsWith("http") || Model.AnhDaiDien.StartsWith("/"))
+                    {
+                        <img src="@Model.AnhDaiDien" alt="@Model.TenNgheSi" onerror="this.onerror=null; this.style.display='none'; this.parentElement.innerHTML='<div class=\'artist-hero-placeholder\'><i class=\'bi bi-person-circle\'></i></div>';">
+                    }
+                    else
+                    {
+                        <img src="~/@Model.AnhDaiDien" alt="@Model.TenNgheSi" onerror="this.onerror=null; this.style.display='none'; this.parentElement.innerHTML='<div class=\'artist-hero-placeholder\'><i class=\'bi bi-person-circle\'></i></div>';">
+                    }
                 }
                 else
                 {
